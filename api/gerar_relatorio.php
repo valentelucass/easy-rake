@@ -1,4 +1,8 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    exit(json_encode(['success' => false, 'message' => 'Acesso não autorizado.']));
+}
 // api/gerar_relatorio.php (Versão que inclui todos os dados)
 include 'db_connection.php';
 // ... (cabeçalhos) ...

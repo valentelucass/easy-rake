@@ -1,4 +1,8 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    exit(json_encode(['success' => false, 'message' => 'Acesso não autorizado.']));
+}
 // api/fechar_caixa.php (Versão que gera relatório final)
 include 'db_connection.php';
 // ... (cabeçalhos CORS) ...

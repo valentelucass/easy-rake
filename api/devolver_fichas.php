@@ -1,17 +1,18 @@
 <?php
-header("Access-Control-Allow-Origin: *"); // Permite que qualquer origem acesse a API
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS"); // Define os métodos permitidos
-header("Access-Control-Allow-Headers: Content-Type"); // Define os cabeçalhos permitidos
-
 include 'db_connection.php';
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents('php://input'), true);
+session_start(); // Adicionado
 $sessionId = $data['sessionId'];
 $playerName = $data['playerName'];
 $amount = $data['amount'];
 $timestamp = date('Y-m-d H:i:s'); // Formato do MySQL
-$unitCode = '1001'; // Assumindo unidade fixa por enquanto
+
+if (!isset($_SESSION['user_id'])) { // Adicionado
+    exit(json_encode(['success' => false, 'message' => 'Acesso não autorizado.']));
+}
+$unitCode = $_SESSION['unit_code']; // Corrigido
 
 // Encontrar o ID do jogador
 $stmt = $conn->prepare("SELECT id FROM players WHERE name = ? AND unit_code = ?");

@@ -1,14 +1,17 @@
 <?php
-// api/vender_fichas.php (Versão Atualizada)
+session_start();
 include 'db_connection.php';
-// ... (cabeçalhos CORS) ...
 header('Content-Type: application/json');
+
+if (!isset($_SESSION['user_id'])) {
+    exit(json_encode(['success' => false, 'message' => 'Acesso não autorizado.']));
+}
+$unitCode = $_SESSION['unit_code'];
 
 $data = json_decode(file_get_contents('php://input'), true);
 $sessionId = $data['sessionId'];
 $playerName = $data['playerName'];
 $amount = $data['amount'];
-$unitCode = '1001';
 $cpf = $data['cpf'] ?? null; // Pega CPF ou define como nulo
 $telefone = $data['telefone'] ?? null; // Pega telefone ou define como nulo
 

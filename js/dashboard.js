@@ -30,7 +30,7 @@ function loadSession() {
 function abrirCaixa() {
     const valorInicial = parseFloat(document.getElementById('initialCashValue').value);
     if (isNaN(valorInicial) || valorInicial < 0) { alert("Valor inicial inválido."); return; }
-    fetch('api/abrir_caixa.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ unitCode: '1001', openedBy: loggedInUserId, initialAmount: valorInicial }) })
+    fetch('api/abrir_caixa.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ openedBy: loggedInUserId, initialAmount: valorInicial }) })
     .then(res => res.json()).then(data => {
         if (data.success) {
             caixaState = data.caixaState;
@@ -52,8 +52,7 @@ function venderFichas() {
     caixaState.chipsSold += amount;
     updateDashboardUI(caixaState);
 
-    fetch('api/vender_fichas.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sessionId: caixaState.sessionId, playerName, cpf: playerCpf, telefone: playerPhone, amount, unitCode: '1001' }) })
-    .then(res => res.json()).then(data => {
+        fetch('api/vender_fichas.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sessionId: caixaState.sessionId, playerName, cpf: playerCpf, telefone: playerPhone, amount }) })    .then(res => res.json()).then(data => {
         if (!data.success) {
             alert('Erro ao salvar venda: ' + (data.message || 'Falha no servidor.'));
             caixaState.chipsSold -= amount;
@@ -72,7 +71,7 @@ function devolverFichas() {
     caixaState.chipsReturned += amount;
     updateDashboardUI(caixaState);
 
-    fetch('api/devolver_fichas.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sessionId: caixaState.sessionId, playerName, amount, unitCode: '1001' }) })
+    fetch('api/devolver_fichas.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sessionId: caixaState.sessionId, playerName, amount }) })
     .then(res => res.json()).then(data => {
         if (!data.success) {
             alert('Erro ao salvar devolução: ' + data.message);

@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!isset($_SESSION['user_id'])) {
+    exit(json_encode(['success' => false, 'message' => 'Acesso não autorizado.']));
+}
 include 'db_connection.php';
 // ... (cabeçalhos CORS) ...
 header('Content-Type: application/json');

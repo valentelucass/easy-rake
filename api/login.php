@@ -4,10 +4,6 @@ session_start();
 
 // O include funciona porque 'db_connection.php' está na mesma pasta 'api/'.
 include 'db_connection.php'; 
-
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
 // Lê os dados que o JavaScript enviou via POST.
@@ -20,8 +16,8 @@ if (empty($username) || empty($password_from_user) || empty($profile)) {
     exit();
 }
 
-// Prepara e executa a consulta ao banco de dados.
-$stmt = $conn->prepare("SELECT id, username, password, profile FROM users WHERE username = ? AND profile = ?");
+// Prepara e executa a consulta ao banco de dados, buscando também o unit_code.
+$stmt = $conn->prepare("SELECT id, username, password, profile, unit_code FROM users WHERE username = ? AND profile = ?");
 $stmt->execute([$username, $profile]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -31,7 +27,8 @@ if ($user && password_verify($password_from_user, $user['password'])) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['username'] = $user['username'];
     $_SESSION['profile'] = $user['profile'];
-    
+    $_SESSION['unit_code'] = $user['unit_code']; // <-- LINHA ADICIONADA: Essencial!
+
     // Retorna uma resposta de sucesso para o JavaScript.
     echo json_encode(['success' => true]);
 } else {

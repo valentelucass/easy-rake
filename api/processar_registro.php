@@ -1,9 +1,6 @@
 <?php
 // api/processar_registro.php
 include 'db_connection.php'; // Como está na mesma pasta 'api', o caminho está correto.
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
 $unitName = $_POST['unitName'] ?? '';
