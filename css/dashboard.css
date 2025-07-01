@@ -1,0 +1,101 @@
+/* === dashboard.css (VERSÃO FINAL E CORRIGIDA) === */
+
+/* --- Layout Principal --- */
+.app-container { width: 100%; max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; box-sizing: border-box; }
+.app-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #282828; }
+.app-header .user-info { flex-grow: 1; text-align: center; padding: 0 1rem; }
+.app-header .button { width: auto; padding: 0.6rem 1.5rem; flex-shrink: 0; }
+.app-title { margin: 0; font-size: 1.8rem; font-weight: 600; }
+.text-muted { font-size: 0.9rem; color: #a0a0a0; margin-top: 0.25rem; }
+.back-arrow { text-decoration: none; }
+.back-arrow-svg { width: 24px; height: 24px; fill: #a0a0a0; transition: fill 0.2s ease; }
+.back-arrow:hover .back-arrow-svg { fill: #ffffff; }
+
+/* --- Abas --- */
+.tabs-container { display: flex; border-bottom: 1px solid #282828; margin-bottom: 2.5rem; }
+.tab-button { padding: 0.75rem 0; margin-right: 2rem; background: none; border: none; color: #a0a0a0; cursor: pointer; border-bottom: 3px solid transparent; font-size: 1rem; transition: all 0.2s; font-weight: 500; }
+.tab-button.active { color: #ffffff; border-bottom-color: #e51e3e; font-weight: 600; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* --- Seções e Cards --- */
+.content-section { background-color: #121212; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; }
+.section-title { margin-top: 0; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600; }
+
+/* --- CORREÇÃO DEFINITIVA DO PAINEL DE VALORES --- */
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.dashboard-card {
+    flex: 1 1 160px; /* Cresce, encolhe, e tem base de 160px. */
+    background-color: #1c1c1c;
+    padding: 1.25rem;
+    border-radius: 8px;
+    text-align: center;
+}
+.card-title { margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #a0a0a0; font-weight: 500; }
+.card-value { margin: 0; font-size: 1.75rem; font-weight: 700; color: #ffffff; overflow-wrap: break-word; }
+.card-value.positive { color: #22c55e; }
+.card-value.negative { color: #ef4444; }
+
+/* --- Estilos Gerais de Botões --- */
+.button { width: 100%; padding: 1rem; background-color: #e51e3e; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color .2s ease, transform 0.1s ease; }
+.button:hover { background-color: #c2142f; transform: translateY(-2px); }
+.button:active { transform: translateY(0); }
+.button.secondary { background-color: #333; }
+.button.secondary:hover { background-color: #444; }
+.button.secondary-outline { background-color: transparent; border: 1px solid #333; }
+.button.secondary-outline:hover { background-color: #333; }
+.button.destructive { background-color: #8b0000; }
+.button.destructive:hover { background-color: #a52a2a; }
+.action-buttons { display: flex; gap: 1rem; }
+
+/* --- Outras seções --- */
+.quick-buy-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; }
+.closing-box { border: 1px solid #e51e3e; background-color: rgba(42, 26, 26, .239); }
+.input-group input:disabled { background-color: #2c2c2c; color: #a0a0a0; cursor: not-allowed; }
+.mt-4 { margin-top: 1.5rem; }
+.reports-shortcut { display: flex; justify-content: space-between; align-items: center; background-color: #1c1c1c; padding: 1rem 1.5rem; border-radius: 8px; }
+.reports-shortcut h3 { margin: 0; font-size: 1rem; font-weight: 500; }
+.reports-shortcut .button { width: auto; padding: 0.75rem 1.5rem; flex-shrink: 0; }
+.history-table-container { max-height: 250px; overflow-y: auto; }
+
+/* --- Estilos dos Modais --- */
+.modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, .7); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px); }
+.modal-content { background-color: #1c1c1c; padding: 2rem; border-radius: 12px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; border: 1px solid #333; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 1rem; margin-bottom: 1rem; }
+.close-button { background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; }
+.report-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.report-table td, .report-table th { padding: .75rem; text-align: left; border-bottom: 1px solid #333; }
+.report-table th { font-weight: 600; }
+.report-table .currency { text-align: right; }
+
+/* --- Cards de Resumo e Display de Diferença --- */
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.summary-card { padding: 1.5rem; border-radius: 8px; text-align: center; }
+.summary-card .card-title { font-size: .9rem; margin-bottom: .5rem; }
+.summary-card .card-value { font-size: 2rem; margin: 0; font-weight: 700; }
+.summary-card.revenue { background-color: rgba(34, 197, 94, .1); border: 1px solid rgba(34, 197, 94, .3); }
+.summary-card.revenue .card-value { color: #22c55e; }
+.summary-card.expenses { background-color: rgba(239, 68, 68, .1); border: 1px solid rgba(239, 68, 68, .3); }
+.summary-card.expenses .card-value { color: #ef4444; }
+.summary-card.balance { background-color: rgba(59, 130, 246, .1); border: 1px solid rgba(59, 130, 246, .3); }
+.summary-card.balance .card-value { color: #3b82f6; }
+.difference-display { display: flex; justify-content: space-between; padding: 1rem; margin-top: 1rem; border-radius: 8px; background-color: #2c2c2c; font-weight: 600; }
+.difference-display span:last-child { font-weight: 700; }
+
+/* --- CSS de Impressão --- */
+@media print {
+    body { background-color: #fff; }
+    body * { visibility: hidden; }
+    .modal-content, .modal-content * { visibility: visible; }
+    .modal-content { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; box-shadow: none; border: none; padding: 1rem; color: #000; }
+    .modal-header .close-button, .modal-footer { display: none !important; }
+    .modal-header h2 { visibility: visible; color: #000; }
+    a, a:visited { text-decoration: none; color: #000; }
+    .report-table { margin-top: 1.5rem; border: 1px solid #ccc; }
+    .report-table td, .report-table th { border-bottom: 1px solid #ccc; padding: .5rem; }
+    .report-table thead { color: #000; }
+}

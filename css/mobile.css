@@ -1,0 +1,75 @@
+/* === mobile.css === */
+/* Estilos para telas menores, garantindo a responsividade */
+
+/* A media query aplica estes estilos apenas em telas com largura máxima de 768px */
+@media (max-width: 768px) {
+
+    /* Ajusta o corpo e o container principal em telas pequenas */
+    body {
+        /* Permite que o conteúdo role se for maior que a tela */
+        padding: 0;
+    }
+
+    .login-container, .app-container {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    /* Ajustes no cabeçalho do App */
+    .app-header {
+        flex-direction: row; /* Mantém a seta, título e botão na mesma linha */
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .app-title {
+        font-size: 1.2rem; /* Diminui um pouco o título principal */
+    }
+
+    /* Ajustes na navegação por abas */
+    .tabs-container {
+        /* Permite que as abas quebrem a linha se não couberem */
+        flex-wrap: wrap; 
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .tab-button {
+        flex-grow: 1; /* Faz as abas ocuparem o espaço disponível */
+        text-align: center;
+        padding: 0.75rem 0.5rem;
+    }
+
+    /* Ajusta o grid de valores para uma única coluna */
+    .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr); /* Fica com 2 colunas no mobile */
+    gap: 0.75rem; /* Diminui um pouco o espaço */
+    }
+    
+    .card-value {
+        font-size: 1.5rem; /* Ajusta o tamanho da fonte nos cards */
+    }
+    
+    /* Faz os botões de Vender/Devolver ficarem um embaixo do outro */
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    /* Faz os botões de compra rápida ficarem em duas colunas */
+    .quick-buy-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Ajustes ainda mais finos para telas muito pequenas (ex: iPhone 5/SE) */
+@media (max-width: 380px) {
+    .login-header h1, .app-title {
+        font-size: 1.1rem;
+    }
+    .login-header h2 {
+        font-size: 1rem;
+    }
+    .back-arrow {
+        font-size: 2rem;
+    }
+}
