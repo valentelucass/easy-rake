@@ -1,176 +1,163 @@
-// === js/ui.js (VERSÃO FINAL E CORRIGIDA) ===
-// Contém apenas funções que manipulam a interface (DOM).
-
-/** Calcula o valor final esperado com base no estado. */
-function calculateExpectedFinalAmount(state) {
-    if (!state) return 0;
-    const totalExpenses = state.expenses ? state.expenses.reduce((total, expense) => total + expense.amount, 0) : 0;
-    return (state.initialAmount || 0) + (state.chipsSold || 0) - (state.chipsReturned || 0) + (state.rake || 0) - totalExpenses;
-}
-
-/** Pega os dados do 'caixaState' e atualiza TODOS os valores visíveis no painel. */
-function updateDashboardUI(state) {
-    if (!state) return;
-    const formatBRL = (value) => (value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    // Atualiza os 4 cards principais
-    if (document.getElementById('fichas-vendidas-val')) {
-        document.getElementById('fichas-vendidas-val').textContent = formatBRL(state.chipsSold);
-        document.getElementById('fichas-devolvidas-val').textContent = formatBRL(state.chipsReturned);
-        document.getElementById('rake-val').textContent = formatBRL(state.rake);
-    }
-    
-    // Calcula totais para os cards de resumo
-    const totalRevenue = (state.chipsSold || 0) + (state.rake || 0);
-    const totalExpensesAndReturns = (state.chipsReturned || 0) + (state.expenses ? state.expenses.reduce((total, expense) => total + expense.amount, 0) : 0);
-    const balance = totalRevenue - totalExpensesAndReturns;
-
-    // Atualiza os 3 cards de resumo
-    if (document.getElementById('summary-revenue')) {
-        document.getElementById('summary-revenue').textContent = formatBRL(totalRevenue);
-        document.getElementById('summary-expenses').textContent = formatBRL(totalExpensesAndReturns);
-        document.getElementById('summary-balance').textContent = formatBRL(balance);
-    }
-
-    // Atualiza o valor esperado no fechamento de caixa
-    if (document.getElementById('expectedValue')) {
-        const expectedAmount = calculateExpectedFinalAmount(state);
-        document.getElementById('expectedValue').value = formatBRL(expectedAmount);
-    }
-}
-
-/** Atualiza a lista de histórico de gastos na tela. */
-function updateExpensesList(expenses) {
-    const listBody = document.getElementById('expenses-history-body');
-    if (!listBody) return;
-    
-    listBody.innerHTML = ''; // Limpa a lista
-    if (expenses && expenses.length > 0) {
-        expenses.forEach(expense => {
-            const date = new Date(expense.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            const formatBRL = (value) => (value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            listBody.innerHTML += `
-                <tr>
-                    <td>${expense.description}</td>
-                    <td class="currency">${formatBRL(expense.amount)}</td>
-                    <td>${date}</td>
-                </tr>
-            `;
-        });
-    } else {
-        listBody.innerHTML = '<tr><td colspan="3">Nenhum gasto registrado.</td></tr>';
-    }
-}
-
-// No js/ui.js
 /**
- * Constrói o HTML do relatório detalhado e exibe o modal.
- * @param {object} reportData - Os dados do relatório.
- * @param {boolean} isHistorical - True se for um relatório antigo, para mudar o botão do rodapé.
+ * Função principal que renderiza toda a interface do dashboard
+ * com base no estado recebido da API.
  */
-function displayReport(reportData, isHistorical = false) {
-    const reportTitle = document.getElementById('report-title');
-    const reportBody = document.getElementById('report-body');
-    const reportFooter = document.getElementById('report-footer'); // Selecionamos o rodapé
-    const formatBRL = (value) => (parseFloat(value) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    
-    reportTitle.textContent = isHistorical ? "Visualizando Relatório Salvo" : "Relatório Parcial";
+function renderizarUICompleta(state) {
+    const { user_info } = state;
 
-    let html = `<h3>Resumo Geral</h3><p>Vendas: ${formatBRL(reportData.total_sales)} | Devoluções: ${formatBRL(reportData.total_returns)} | Rake: ${formatBRL(reportData.total_rake)} | Despesas: ${formatBRL(reportData.total_expenses)}</p>`;
+    // 1. Renderiza o cabeçalho
+    const appTitle = document.getElementById('app-title');
+    if(appTitle) appTitle.textContent = `Caixa - Unidade ${user_info.codigo_acesso}`;
 
-    if (reportData.players_details && reportData.players_details.length > 0) {
-        html += `<hr><h3>Detalhes por Jogador</h3><table class="report-table"><thead><tr><th>Jogador</th><th>CPF</th><th>Telefone</th><th class="currency">Balanço Final</th></tr></thead><tbody>`;
-        reportData.players_details.forEach(player => {
-            html += `<tr><td>${player.name || '-'}</td><td>${player.cpf || '-'}</td><td>${player.telefone || '-'}</td><td class="currency">${formatBRL(player.balance)}</td></tr>`;
-        });
-        html += `</tbody></table>`;
-    }
+    const welcomeMsg = document.getElementById('welcome-message');
+    if(welcomeMsg) welcomeMsg.textContent = `Bem-vindo(a), ${user_info.nome} (${user_info.perfil})`;
 
-    html += `<hr><h3>Transações Recentes</h3><table class="report-table"><thead><tr><th>Tipo</th><th>Descrição/Jogador</th><th class="currency">Valor</th></tr></thead><tbody>`;
-    if (reportData.transactions && reportData.transactions.length > 0) {
-        reportData.transactions.forEach(tx => {
-            html += `<tr><td>${tx.type}</td><td>${tx.player_name || tx.description || '-'}</td><td class="currency">${formatBRL(tx.amount)}</td></tr>`;
-        });
-    } else {
-        html += `<tr><td colspan="3">Nenhuma transação nesta sessão.</td></tr>`;
-    }
-    html += `</tbody></table>`;
-    
-    reportBody.innerHTML = html;
+    const logoutBtn = document.getElementById('logoutButton');
+    if(logoutBtn) logoutBtn.addEventListener('click', handleLogout);
 
-    // LÓGICA PARA MUDAR OS BOTÕES DO RODAPÉ
-    if (isHistorical) {
-        reportFooter.innerHTML = '<button id="btn-back-to-list" class="button secondary">Voltar para a Lista</button>';
-        // Conecta o novo botão de voltar
-        document.getElementById('btn-back-to-list').addEventListener('click', () => {
-            document.getElementById('report-modal').style.display = 'none';
-            listarRelatorios(); // Reabre a lista
-        });
-    } else {
-        reportFooter.innerHTML = '<button class="button secondary" onclick="window.print()">Imprimir</button>';
-    }
+    // 2. Renderiza as abas de acordo com o perfil
+    renderizarAbas(user_info.perfil);
 
-    document.getElementById('report-modal').style.display = 'flex';
+    // 3. Define qual aba deve ser exibida primeiro
+    const abaInicial = (user_info.perfil === 'gestor' || user_info.perfil === 'caixa') ? 'caixa' : 'fichas';
+    renderizarConteudoDaAba(abaInicial, state);
 }
 
-/** Constrói a lista de relatórios salvos e exibe o modal. */
-function displayReportsList(reports) {
-    const listBody = document.getElementById('reports-list-body');
-    listBody.innerHTML = '';
-    if (reports.length === 0) {
-        listBody.innerHTML = '<tr><td colspan="3">Nenhum relatório salvo encontrado.</td></tr>';
-    } else {
-        reports.forEach(report => {
-            const date = new Date(report.generated_at).toLocaleString('pt-BR');
-            const row = `
-    <tr>
-        <td>${date}</td>
-        <td>${report.type}</td>
-        <td><button class="button secondary-outline" style="width: auto; padding: 0.5rem 1rem;" onclick="viewReportDetails(${report.id})">Visualizar</button></td>
-    </tr>
-`;
-            listBody.innerHTML += row;
-        });
-    }
-    document.getElementById('reports-list-modal').style.display = 'flex';
-}
+/**
+ * Cria os botões das abas e adiciona os eventos de clique.
+ */
+function renderizarAbas(perfil) {
+    const container = document.getElementById('tabs-container');
+    if(!container) return;
+    container.innerHTML = ''; // Limpa abas antigas
 
-/** Configura a visibilidade dos elementos com base no perfil do usuário. */
-function setupUIForProfile(profile) {
-    const elementsWithPermission = document.querySelectorAll('[data-permission]');
-    elementsWithPermission.forEach(element => {
-        const allowedProfiles = element.dataset.permission.split(',');
-        element.style.display = allowedProfiles.includes(profile) ? '' : 'none';
+    let abasHtml = '';
+    if (perfil === 'gestor' || perfil === 'caixa') {
+        abasHtml += `<button class="tab-button" data-tab="caixa">Caixa</button>`;
+    }
+    abasHtml += `<button class="tab-button" data-tab="fichas">Fichas</button>`;
+    if (perfil === 'gestor') {
+        abasHtml += `<button class="tab-button" data-tab="aprovacoes">Aprovações</button>`;
+    }
+    container.innerHTML = abasHtml;
+
+    // Adiciona o evento de clique para cada aba
+    container.querySelectorAll('.tab-button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Atualiza o estado visual
+            container.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            // Renderiza o conteúdo da aba clicada
+            renderizarConteudoDaAba(e.target.dataset.tab, dashboardState);
+        });
     });
-    const firstVisibleTab = document.querySelector('.tab-button:not([style*="display: none;"])');
-    if (firstVisibleTab) {
-        firstVisibleTab.click();
+
+    // Ativa a primeira aba visível como padrão
+    const primeiraAba = container.querySelector('.tab-button');
+    if (primeiraAba) primeiraAba.classList.add('active');
+}
+
+/**
+ * Renderiza o conteúdo HTML da aba selecionada.
+ */
+function renderizarConteudoDaAba(nomeAba, state) {
+    const mainContent = document.getElementById('main-content');
+    if(!mainContent) return;
+    mainContent.innerHTML = ''; // Limpa o conteúdo anterior
+
+    switch (nomeAba) {
+        case 'caixa':
+            // Só mostra se o caixa estiver aberto
+            if (state.caixa) {
+                mainContent.innerHTML = getHtmlAbaCaixa(state);
+                vincularEventosAbaCaixa();
+            } else {
+                mainContent.innerHTML = getHtmlAbaCaixaFechado();
+                // vincularEventosAbaCaixaFechado(); // Para o botão de abrir caixa
+            }
+            break;
+        case 'fichas':
+            mainContent.innerHTML = getHtmlAbaFichas();
+            vincularEventosAbaFichas();
+            break;
+        case 'aprovacoes':
+            mainContent.innerHTML = getHtmlAbaAprovacoes();
+            carregarAprovacoes(); // Busca os dados para esta aba específica
+            break;
     }
 }
 
-// Adicionar ao ui.js
+// As funções getHtml... e vincularEventos... seriam adicionadas aqui, construindo
+// visualmente cada aba e conectando seus botões às funções do dashboard.js.
+// Exemplo para a aba de Fichas:
 
-/** Constrói a lista de solicitações pendentes na tabela. */
-function displayPendingRequests(requests) {
-    const listBody = document.getElementById('pending-requests-tbody');
-    if (!listBody) return;
-    listBody.innerHTML = '';
-
-    if (requests.length === 0) {
-        listBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Nenhuma solicitação pendente.</td></tr>';
-    } else {
-        requests.forEach(req => {
-            const date = new Date(req.created_at).toLocaleString('pt-BR');
-            listBody.innerHTML += `
-                <tr>
-                    <td>${req.sanger_name}</td>
-                    <td>${date}</td>
-                    <td class="action-buttons" style="justify-content: center;">
-                        <button class="button" style="width:auto; padding: 0.5rem 1rem;" onclick="approveRequest(${req.id})">Aprovar</button>
-                        <button class="button destructive" style="width:auto; padding: 0.5rem 1rem;" onclick="denyRequest(${req.id})">Recusar</button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
+function getHtmlAbaFichas() {
+    return `
+        <section class="content-section">
+            <h2 class="section-title">Venda e Devolução de Fichas</h2>
+            <div class="input-group">
+                <label for="nome_jogador">Nome do Jogador</label>
+                <input type="text" id="nome_jogador" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="valor_fichas">Valor das Fichas (R$)</label>
+                <input type="number" id="valor_fichas" placeholder="0,00">
+            </div>
+            <div class="action-buttons">
+                <button id="btn-vender-fichas" class="button">Vender Fichas</button>
+                <button id="btn-devolver-fichas" class="button destructive">Devolver Fichas</button>
+            </div>
+        </section>
+    `;
 }
+
+function vincularEventosAbaFichas() {
+    const btnVender = document.getElementById('btn-vender-fichas');
+    const btnDevolver = document.getElementById('btn-devolver-fichas');
+
+    btnVender.addEventListener('click', () => {
+        const dados = {
+            valor: document.getElementById('valor_fichas').value,
+            nome_jogador: document.getElementById('nome_jogador').value
+        };
+        // Chama a função centralizada do dashboard.js
+        registrarTransacao('venda', dados);
+    });
+
+    btnDevolver.addEventListener('click', () => {
+        const dados = {
+            valor: document.getElementById('valor_fichas').value,
+            nome_jogador: document.getElementById('nome_jogador').value
+        };
+        // Chama a mesma função, mas com tipo diferente
+        registrarTransacao('devolucao', dados);
+    });
+}
+
+function getHtmlAbaCaixaFechado() {
+    return `<section class="content-section"><h2 class="section-title">O caixa está fechado.</h2><p>Abra um novo caixa para iniciar as operações.</p><button id="btn-abrir-caixa" class="button">Abrir Caixa</button></section>`;
+}
+
+// Função para renderizar o restante da aba caixa
+function getHtmlAbaCaixa(state) {
+    const { caixa, caixinhas, gastos_recentes } = state;
+    const formatBRL = (value) => (parseFloat(value) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    // O HTML da sua aba caixa iria aqui, usando os dados de 'state'
+    return `
+        <section class="content-section">
+            <h2 class="section-title">Gerenciamento de Caixa</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card"><h3 class="card-title">Fichas Vendidas</h3><p class="card-value positive">${formatBRL(caixa.total_sales)}</p></div>
+                <div class="dashboard-card"><h3 class="card-title">Fichas Devolvidas</h3><p class="card-value negative">${formatBRL(caixa.total_returns)}</p></div>
+                <div class="dashboard-card"><h3 class="card-title">Rake</h3><p class="card-value positive">${formatBRL(caixa.total_rake)}</p></div>
+                <div class="dashboard-card"><h3 class="card-title">Caixinhas</h3><p class="card-value">${formatBRL(caixa.total_caixinhas)}</p></div>
+            </div>
+        </section>
+        `;
+}
+
+function vincularEventosAbaCaixa(){} // Os eventos dos botões da aba caixa iriam aqui
+
+function getHtmlAbaAprovacoes(){ /* ... */ } // HTML da aba de aprovações
+async function carregarAprovacoes(){ /* ... */ } // Lógica para buscar e exibir aprovações

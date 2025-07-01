@@ -32,14 +32,17 @@ function viewReportDetails(reportId) {
  * Também salva este relatório no banco de dados.
  */
 function gerarRelatorioParcial() {
-    if (!caixaState || !caixaState.sessionId) {
+    // Agora busca o ID da sessão de dentro do nosso novo estado global
+    const sessaoId = dashboardState.caixa ? dashboardState.caixa.id : null;
+
+    if (!sessaoId) {
         alert("Nenhum caixa aberto para gerar relatório.");
         return;
     }
     fetch('api/gerar_relatorio.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: caixaState.sessionId })
+        body: JSON.stringify({ sessionId: sessaoId })
     })
     .then(response => response.json())
     .then(data => {

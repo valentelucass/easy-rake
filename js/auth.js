@@ -1,54 +1,49 @@
-// === js/auth.js (VERSÃO COM FLUXO DE SANGER) ===
-
+/**
+ * Lida com o envio do formulário de login, coletando os dados
+ * e enviando para a API correta.
+ */
 function handleLogin() {
-    const selectedProfile = document.querySelector('.user-type-option.active').dataset.profile;
-
-    if (selectedProfile === 'sanger') {
-        handleSangerRequest();
-    } else {
-        handleGestorCaixaLogin();
-    }
-}
-
-function handleGestorCaixaLogin() {
     const form = document.getElementById('loginForm');
-    const formData = new FormData(form);
-    const selectedProfile = document.querySelector('.user-type-option.active').dataset.profile;
-    formData.append('profile', selectedProfile);
+    // Usamos 'username' como o ID do campo de email/usuário, conforme seu HTML.
+    const emailOuUsernameInput = document.getElementById('username'); 
+    const passwordInput = document.getElementById('password');
+    const codigoAcessoInput = document.getElementById('codigo_acesso');
 
-    fetch('api/login.php', { method: 'POST', body: formData })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = 'dashboard.php';
-        } else {
-            alert(data.message || 'Dados inválidos.');
-        }
-    })
-    .catch(error => console.error('Erro no login:', error));
-}
-
-function handleSangerRequest() {
-    const sangerName = document.getElementById('sangerName').value;
-    const unitCode = document.getElementById('unitCode').value;
-
-    if (!sangerName || !unitCode) {
-        alert("Por favor, preencha seu nome e o código da unidade.");
+    const selectedProfileBtn = document.querySelector('.user-type-option.active');
+    if (!selectedProfileBtn) {
+        alert('Por favor, selecione um tipo de acesso.');
         return;
     }
+    const profileType = selectedProfileBtn.dataset.profile;
 
-    fetch('api/solicitar_acesso.php', {
+    // Monta o corpo da requisição
+    const data = {
+        email: emailOuUsernameInput.value,
+        password: passwordInput.value
+    };
+
+    // Adiciona o código de acesso apenas se o perfil for Sanger
+    if (profileType === 'sanger') {
+        data.codigo_acesso = codigoAcessoInput.value;
+    }
+
+    fetch('api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sangerName, unitCode })
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Solicitação enviada! Aguardando aprovação do gestor.");
-            // Futuramente, aqui entraria a lógica de espera (polling)
+    .then(result => {
+        if (result.success) {
+            // Se a API confirmar o login, redireciona para o dashboard
+            window.location.href = 'dashboard.php';
         } else {
-            alert("Erro ao enviar solicitação: " + data.message);
+            // Exibe a mensagem de erro específica vinda da API
+            alert(result.message || 'Dados inválidos.');
         }
+    })
+    .catch(error => {
+        console.error('Erro na requisição de login:', error);
+        alert('Ocorreu um erro de comunicação. Verifique sua conexão e tente novamente.');
     });
 }
