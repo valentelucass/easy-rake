@@ -1,15 +1,15 @@
-function handleLogout() {
-    if (confirm('Você tem certeza que deseja sair?')) {
-        window.location.href = 'logout.php';
-    }
-}
+// === js/main.js ===
+// Contém apenas a lógica da tela de LOGIN.
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Lógica para alternar formulário na tela de login
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            handleFormSubmit();
+            handleFormSubmit(); // handleFormSubmit está em auth.js, que é carregado em login.php
         });
+
         const userTypeSelector = document.getElementById('userTypeSelector');
         if (userTypeSelector) {
             const options = userTypeSelector.querySelectorAll('.user-type-option');
@@ -17,11 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const sangerFields = document.getElementById('sanger-fields');
             const mainButton = document.getElementById('main-action-button');
             const footerLink = document.getElementById('footer-link');
+
             options.forEach(option => {
                 option.addEventListener('click', () => {
                     options.forEach(btn => btn.classList.remove('active'));
                     option.classList.add('active');
                     const selectedProfile = option.dataset.profile;
+
                     if (selectedProfile === 'sanger') {
                         gestorCaixaFields.style.display = 'none';
                         sangerFields.style.display = 'block';
@@ -40,9 +42,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         }
-    }
-    const logoutButton = document.getElementById('logoutButton');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', handleLogout);
     }
 });

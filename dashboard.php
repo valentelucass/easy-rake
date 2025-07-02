@@ -55,7 +55,7 @@ $userProfile = $_SESSION['perfil'];
             <button id="logoutButton" class="button secondary">Sair</button>
         </header>
         <div id="tabs-container" class="tabs-container"></div>
-        <main id="main-content">
+<main id="main-content">
             <div id="caixa-content" class="tab-content">
                 <section class="content-section">
                     <h2 class="section-title">Gerenciamento de Caixa - Unidade <span id="unit-code-display"></span></h2>
@@ -78,11 +78,19 @@ $userProfile = $_SESSION['perfil'];
                         </div>
                     </div>
                 </section>
-                </section>
                 <section class="content-section">
                     <h2 class="section-title">Rake Parcial</h2>
-                    <div class="input-group"><label for="rakeValue">Adicionar Rake (R$)</label><input type="number" id="rakeValue" placeholder="0,00"></div>
+                    <div class="input-group">
+                        <label for="rakeValue">Adicionar Rake (R$)</label>
+                        <input type="number" id="rakeValue" placeholder="0,00">
+                    </div>
                     <button id="btn-adicionar-rake" class="button">Adicionar Rake</button>
+                    <div id="rake-summary" class="rake-total-display">
+                        Rake Total: <strong id="rake-total-val">R$ 0,00</strong>
+                    </div>
+                    <h4 class="history-title">Histórico de Rake</h4>
+                    <ul id="rake-history-list" class="rake-history"></ul>
+                    <button id="btn-comprovante-rake" class="button secondary mt-4">Gerar Comprovante de Rake Parcial</button>
                 </section>
                 <section class="content-section">
                     <h2 class="section-title">Caixinhas</h2>
@@ -147,6 +155,7 @@ $userProfile = $_SESSION['perfil'];
                     </div>
                 </section>
             </div>
+
             <div id="fichas-content" class="tab-content">
                 <section class="content-section">
                     <h2 class="section-title">Venda e Devolução de Fichas</h2>
@@ -170,32 +179,56 @@ $userProfile = $_SESSION['perfil'];
                         <button id="btn-vender-fichas" class="button">Vender Fichas</button>
                         <button id="btn-devolver-fichas" class="button destructive">Devolver Fichas</button>
                     </div>
-                    <div class="quick-buy mt-4">
-                        <p class="text-muted">Compra Rápida</p>
-                        <div class="quick-buy-buttons">
-                            <button class="button secondary-outline">R$ 100</button>
-                            <button class="button secondary-outline">R$ 200</button>
-                            <button class="button secondary-outline">R$ 500</button>
-                            <button class="button secondary-outline">R$ 1000</button>
-                        </div>
+
+                    <hr style="margin: 2.5rem 0; border-color: #282828;">
+                    <h3 class="section-title" style="margin-bottom: 1.5rem;">Jogadores Ativos na Sessão</h3>
+                    <div class="history-table-container">
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>Jogador</th>
+                                    <th class="currency">Fichas Compradas</th>
+                                    <th class="currency">Fichas Devolvidas</th>
+                                    <th class="currency">Situação</th>
+                                    <th style="text-align: center;">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="active-players-tbody">
+                                </tbody>
+                        </table>
                     </div>
                 </section>
             </div>
+
             <div id="aprovacoes-content" class="tab-content">
                 <section class="content-section">
                     <h2 class="section-title">Solicitações de Acesso Pendentes</h2>
-                </section>
+                    </section>
             </div>
         </main>
+    </div> <div id="player-details-modal" class="modal-container">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="player-details-title">Detalhes do Jogador</h2>
+                <button id="player-details-close" class="close-button">&times;</button>
+            </div>
+            <div id="player-details-body" class="modal-body">
+                </div>
+            <div class="modal-footer">
+                <button id="btn-print-player-details" class="button">Imprimir Situação</button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Esta variável global é usada pelos scripts para saber o perfil do usuário logado.
         const loggedInUserProfile = "<?php echo $userProfile; ?>";
     </script>
-    <script src="js/main.js"></script>
     <script src="js/reports.js"></script>
-    <script src="js/caixinhas.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="js/caixa.js"></script>
+    <script src="js/fichas.js"></script>
     <script src="js/ui.js"></script>
+    <script src="js/dashboard.js"></script>
+
 </body>
 </html>

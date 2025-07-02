@@ -103,3 +103,110 @@
     .report-table td, .report-table th { border-bottom: 1px solid #ccc; padding: .5rem; }
     .report-table thead { color: #000; }
 }
+
+/* Adicionar ao final de dashboard.css */
+
+.rake-total-display {
+    background-color: rgba(34, 197, 94, .1);
+    color: #22c55e;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+.rake-total-display strong {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: block;
+}
+.history-title {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #a0a0a0;
+    font-weight: 500;
+    border-bottom: 1px solid #282828;
+    padding-bottom: 0.5rem;
+}
+.rake-history {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.rake-history li {
+    display: flex;
+    justify-content: space-between;
+    background-color: #1c1c1c;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+.rake-history .currency {
+    font-weight: 600;
+    color: #22c55e;
+}
+
+/* === ESTILOS PARA O MODAL DE DETALHES DO JOGADOR === */
+
+/* Garante que o modal fique escondido por padrão */
+#player-details-modal {
+    display: none;
+}
+
+/* Resumo financeiro no topo do modal */
+.player-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #282828;
+}
+.player-summary-card {
+    background-color: #1c1c1c;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+.player-summary-card h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.8rem;
+    color: #a0a0a0;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.player-summary-card p {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.player-summary-card.debito p {
+    color: #ef4444; /* Vermelho para débito */
+}
+.player-summary-card.credito p {
+    color: #22c55e; /* Verde para crédito/quitado */
+}
+
+/* Título para a tabela de histórico */
+.transaction-history-title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+/* Estilos de impressão específicos para este modal */
+@media print {
+    body * { visibility: hidden; }
+    #player-details-modal, #player-details-modal * {
+        visibility: visible;
+    }
+    #player-details-modal {
+        position: absolute; left: 0; top: 0;
+    }
+    #player-details-modal .modal-header .close-button, 
+    #player-details-modal .modal-footer {
+        display: none;
+    }
+}

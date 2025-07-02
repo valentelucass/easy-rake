@@ -1,56 +1,56 @@
 <?php
 session_start();
 include 'db_connection.php';
-
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST"); // Por enquanto, só aceitaremos POST para criar
 header('Content-Type: application/json');
 
-// 1. Segurança: Apenas gestores podem criar caixinhas
 if (!isset($_SESSION['unidade_id']) || $_SESSION['perfil'] !== 'gestor') {
     exit(json_encode(['success' => false, 'message' => 'Ação não autorizada.']));
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
 $unidade_id = $_SESSION['unidade_id'];
+$method = $_SERVER['REQUEST_METHOD'];
+$data = json_decode(file_get_contents('php://input'), true);
 
-// 2. Validação dos dados recebidos do formulário
-$nome_caixinha = $data['nome_caixinha'] ?? '';
-$valor_inicial = $data['valor'] ?? 0;
-$participantes = $data['participantes'] ?? 1;
-$cashback = $data['cashback'] ?? 0;
+if ($method === 'POST') {
+    // --- LÓGICA CORRIGIDA PARA CRIAR NOVA CAIXINHA ---
+    $nome_caixinha = $data['nome_caixinha'] ?? 'Nova Caixinha';
+    
+    // A query agora inclui todos os campos com valores iniciais zerados.
+    $sql = "INSERT INTO caixinhas 
+                (unidade_id, nome_caixinha, valor_atual, participantes, cashback_percent) 
+            VALUES (?, ?, 0, 1, 0)"; // Define valor_atual=0, participantes=1, cashback=0
 
-if (empty($nome_caixinha) || !is_numeric($valor_inicial) || !is_numeric($participantes) || !is_numeric($cashback)) {
-    exit(json_encode(['success' => false, 'message' => 'Dados da caixinha inválidos.']));
-}
+    $stmt = $conn->prepare($sql);
+    try {
+        // A execução agora só precisa dos parâmetros que vêm da variável
+        $stmt->execute([$unidade_id, $nome_caixinha]);
+        echo json_encode(['success' => true, 'id' => $conn->lastInsertId()]);
 
-// 3. Insere a nova caixinha no banco de dados
-$sql = "INSERT INTO caixinhas (unidade_id, nome_caixinha, valor_atual, participantes, cashback_percent) VALUES (?, ?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-
-try {
-    $stmt->execute([$unidade_id, $nome_caixinha, $valor_inicial, $participantes, $cashback]);
-    $nova_caixinha_id = $conn->lastInsertId();
-
-    // 4. [Opcional, mas recomendado] Registra o valor inicial como uma transação
-    // Isso mantém seu histórico financeiro consistente.
-    if ($valor_inicial > 0) {
-        // Busca a sessão de caixa aberta
-        $stmt_session = $conn->prepare("SELECT id FROM cashier_sessions WHERE unidade_id = ? AND status = 'open' LIMIT 1");
-        $stmt_session->execute([$unidade_id]);
-        $sessao = $stmt_session->fetch(PDO::FETCH_ASSOC);
-
-        if ($sessao) {
-            $trans_sql = "INSERT INTO transactions (cashier_session_id, type, amount, description) VALUES (?, 'caixinha', ?, ?)";
-            $stmt_trans = $conn->prepare($trans_sql);
-            $stmt_trans->execute([$sessao['id'], $valor_inicial, "Valor inicial para: " . $nome_caixinha]);
-        }
+    } catch (PDOException $e) {
+        error_log("Erro ao criar caixinha: " . $e->getMessage()); // Adicionar logs ajuda a depurar
+        echo json_encode(['success' => false, 'message' => 'Erro ao criar caixinha.']);
     }
 
-    echo json_encode(['success' => true, 'message' => 'Caixinha criada com sucesso!', 'id' => $nova_caixinha_id]);
+} elseif ($method === 'PUT') {
+    // --- LÓGICA PARA ATUALIZAR CAIXINHA EXISTENTE (permanece a mesma) ---
+    $id = $data['id'] ?? 0;
+    $nome_caixinha = $data['nome_caixinha'] ?? 'Caixinha';
+    $valor_atual = $data['valor_atual'] ?? 0;
+    $cashback_percent = $data['cashback_percent'] ?? 0;
+    $participantes = $data['participantes'] ?? 1;
 
-} catch (PDOException $e) {
-    error_log('Erro ao criar caixinha: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Erro interno ao criar a caixinha.']);
+    if (!$id) {
+        exit(json_encode(['success' => false, 'message' => 'ID da caixinha não fornecido.']));
+    }
+
+    $sql = "UPDATE caixinhas SET nome_caixinha = ?, valor_atual = ?, cashback_percent = ?, participantes = ? 
+            WHERE id = ? AND unidade_id = ?";
+    $stmt = $conn->prepare($sql);
+    try {
+        $stmt->execute([$nome_caixinha, $valor_atual, $cashback_percent, $participantes, $id, $unidade_id]);
+        echo json_encode(['success' => true]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Erro ao salvar alterações.']);
+    }
 }
 ?>

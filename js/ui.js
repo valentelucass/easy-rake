@@ -22,6 +22,9 @@ function renderizarUICompleta(state, isUpdate = false) {
     updateResumoCaixa(state);
     updateGastos(state);
     updateFechamentoCaixa(state);
+    updateRake(state);
+    renderizarCaixinhasSalvas(state.caixinhas || []);
+    updateActivePlayers(state);
 }
 
 function renderizarAbas(perfil) {
