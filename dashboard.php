@@ -206,7 +206,9 @@ $userProfile = $_SESSION['perfil'];
                     </section>
             </div>
         </main>
-    </div> <div id="player-details-modal" class="modal-container">
+    </div>
+    <!-- Início do player-details-modal -->
+    <div id="player-details-modal" class="modal-container">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="player-details-title">Detalhes do Jogador</h2>
@@ -219,6 +221,22 @@ $userProfile = $_SESSION['perfil'];
             </div>
         </div>
     </div>
+    <!-- Fim do player-details-modal -->
+
+    <!-- NOVO MODAL DE RELATÓRIO (para Rake e Relatórios Parciais/Finais) -->
+    <div id="report-modal" class="modal-container">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="report-title">Título do Relatório</h2>
+                <button id="btn-close-modal" class="close-button">&times;</button>
+            </div>
+            <div id="report-body" class="modal-body">
+                <!-- Conteúdo do relatório será inserido aqui pelo JavaScript -->
+            </div>
+
+        </div>
+    </div>
+    <!-- Fim do report-modal -->
 
     <script>
         // Esta variável global é usada pelos scripts para saber o perfil do usuário logado.

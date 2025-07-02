@@ -56,6 +56,117 @@ function gerarRelatorioParcial() {
     .catch(error => console.error('Erro na API do relatório:', error));
 }
 
+// === js/reports.js ===
+// ... (código existente) ...
+
+/**
+ * Gera um comprovante de rake parcial da sessão atual.
+ */
+function gerarComprovanteRakeParcial() {
+    const sessaoId = dashboardState.caixa ? dashboardState.caixa.id : null;
+
+    if (!sessaoId) {
+        alert("Nenhum caixa aberto para gerar comprovante de rake.");
+        return;
+    }
+
+    // Buscamos apenas as entradas de rake para este comprovante
+    const rakeEntries = dashboardState.rake_entries || [];
+    const totalRake = parseFloat(dashboardState.caixa.total_rake || 0);
+    const emittedDateTime = new Date().toLocaleString('pt-BR'); // Data e hora de emissão
+
+const rakeTableRows = rakeEntries.map(entry => {
+    const dateObj = new Date(entry.timestamp);
+    const datePart = dateObj.toLocaleDateString('pt-BR');
+    const timePart = dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return `
+        <div class="comp-item-row">
+            <span>${datePart} ${timePart}</span>
+            <span class="comp-value">${formatCurrency(entry.amount)}</span>
+        </div>
+    `;
+}).join('');
+
+const comprovanteHtml = `
+    <div class="comprovante-container">
+        <h2 class="comp-title">Easy Rake</h2>
+        <p class="comp-subtitle">Unidade: ${dashboardState.user_info.codigo_acesso}</p>
+        <p class="comp-doc-type">COMPROVANTE DE RAKE</p>
+
+        <hr class="comp-hr-solid" />
+
+        <div class="comp-info-row">
+            <span class="comp-label">Data/Hora:</span>
+            <span class="comp-value">${emittedDateTime}</span>
+        </div>
+        <div class="comp-info-row">
+            <span class="comp-label">Operador:</span>
+            <span class="comp-value">${dashboardState.user_info.nome}</span>
+        </div>
+
+        <hr class="comp-hr-solid" />
+
+        <h4 class="comp-section-title">DETALHAMENTO DO RAKE:</h4>
+        ${rakeTableRows || '<p class="comp-no-entries">Nenhuma entrada de rake nesta sessão.</p>'}
+
+        <hr class="comp-hr-solid" />
+
+        <div class="comp-info-row comp-total-row">
+            <span class="comp-label">RAKE TOTAL:</span>
+            <span class="comp-value">${formatCurrency(totalRake)}</span>
+        </div>
+
+        <hr class="comp-hr-solid" />
+
+        <div class="comp-observacoes">
+            <p class="comp-observacao-text">Guarde este comprovante para controle.</p>
+        </div>
+
+        <div class="comp-assinatura">
+            <p>_________________________</p>
+            <p>Assinatura do Responsável</p>
+        </div>
+    </div>
+`;
+
+    // Reutilizamos o modal de relatório, mas ajustamos o conteúdo
+    const modal = document.getElementById('report-modal');
+    const modalTitle = document.getElementById('report-title');
+    const body = document.getElementById('report-body');
+
+    // ADICIONE ESTA VERIFICAÇÃO para garantir que os elementos foram encontrados
+    if (!modal || !modalTitle || !body) {
+        console.error("Elementos do modal de relatório não encontrados. Verifique os IDs no HTML.");
+        return; // Sai da função se os elementos não existirem
+    }
+
+    modalTitle.textContent = "Comprovante de Rake Parcial";
+    body.innerHTML = comprovanteHtml;
+    
+    // Adiciona listener para o botão de impressão (se existir dentro do novo HTML)
+    const printButton = body.querySelector('#btnPrintReport'); // Buscar dentro do body do modal
+    if (printButton) {
+        printButton.addEventListener('click', () => window.print());
+    } else {
+        // Se o botão não estiver no HTML gerado, adicionamos um fora da div comprovante-container
+        const printBtnWrapper = document.createElement('div');
+        printBtnWrapper.className = 'modal-footer'; // Reutiliza a classe para estilização
+        printBtnWrapper.style.textAlign = 'right';
+        printBtnWrapper.style.marginTop = '2rem';
+        printBtnWrapper.innerHTML = '<button id="btnPrintReport" class="button">Imprimir Comprovante</button>';
+        body.appendChild(printBtnWrapper);
+        document.getElementById('btnPrintReport').addEventListener('click', () => window.print());
+    }
+
+
+    modal.style.display = 'flex';
+
+    document.getElementById('btn-close-modal').onclick = () => {
+        modal.style.display = 'none';
+        // Não recarrega a página, pois é um relatório parcial e não um fechamento de caixa
+    };
+}
+
 /** Busca e exibe a lista de todos os relatórios salvos. */
 function listarRelatorios() {
     fetch('api/listar_relatorios.php')

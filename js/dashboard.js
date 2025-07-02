@@ -87,12 +87,12 @@ function vincularEventosDaAba(nomeAba) {
     };
 
     if (nomeAba === 'caixa') {
-        // MANTÉM OS VÍNCULOS GERAIS AQUI
         vincular('btn-adicionar-rake', 'click', handleAddRake);
         vincular('btn-adicionar-gasto', 'click', handleAddExpense);
         vincular('btn-fechar-caixa', 'click', handleCloseBox);
+        vincular('btn-relatorio-parcial', 'click', gerarRelatorioParcial); // Já deve existir
+        vincular('btn-comprovante-rake', 'click', gerarComprovanteRakeParcial); // << Adicione esta linha
 
-        // CHAMA A FUNÇÃO DE INTELIGÊNCIA DO caixa.js
         inicializarAbaCaixa(dashboardState);
 
     } else if (nomeAba === 'fichas') {
