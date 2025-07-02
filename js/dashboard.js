@@ -371,7 +371,7 @@ async function handleCloseBox() {
 document.addEventListener('click', function(e) {
     if (e.target) {
         if (e.target.classList.contains('btn-ver-detalhes')) handleVerDetalhes(e);
-        if (e.target.classList.contains('btn-quitar')) handleQuitarDebito(e);
+        if (e.target.classList.contains('btn-quitar')) handleQuitarDebito(e); // << Adicione esta linha
         if (e.target.id === 'player-details-close') document.getElementById('player-details-modal').style.display = 'none';
         if (e.target.id === 'btn-print-player-details') window.print();
     }
