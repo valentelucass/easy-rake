@@ -1,32 +1,17 @@
-/**
- * Lida com o envio do formulário de login, coletando os dados
- * e enviando para a API correta.
- */
-function handleLogin() {
-    const form = document.getElementById('loginForm');
-    // Usamos 'username' como o ID do campo de email/usuário, conforme seu HTML.
-    const emailOuUsernameInput = document.getElementById('username'); 
-    const passwordInput = document.getElementById('password');
-    const codigoAcessoInput = document.getElementById('codigo_acesso');
-
+function handleFormSubmit() {
     const selectedProfileBtn = document.querySelector('.user-type-option.active');
-    if (!selectedProfileBtn) {
-        alert('Por favor, selecione um tipo de acesso.');
-        return;
-    }
-    const profileType = selectedProfileBtn.dataset.profile;
-
-    // Monta o corpo da requisição
-    const data = {
-        email: emailOuUsernameInput.value,
-        password: passwordInput.value
-    };
-
-    // Adiciona o código de acesso apenas se o perfil for Sanger
+    const profileType = selectedProfileBtn ? selectedProfileBtn.dataset.profile : null;
     if (profileType === 'sanger') {
-        data.codigo_acesso = codigoAcessoInput.value;
+        submitSangerRequest();
+    } else {
+        submitLogin();
     }
-
+}
+function submitLogin() {
+    const data = {
+        email: document.getElementById('username').value,
+        password: document.getElementById('password').value
+    };
     fetch('api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -35,15 +20,40 @@ function handleLogin() {
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            // Se a API confirmar o login, redireciona para o dashboard
             window.location.href = 'dashboard.php';
         } else {
-            // Exibe a mensagem de erro específica vinda da API
             alert(result.message || 'Dados inválidos.');
         }
     })
-    .catch(error => {
-        console.error('Erro na requisição de login:', error);
-        alert('Ocorreu um erro de comunicação. Verifique sua conexão e tente novamente.');
-    });
+    .catch(error => console.error('Erro na requisição de login:', error));
+}
+function submitSangerRequest() {
+    const data = {
+        sangerName: document.getElementById('sangerName').value,
+        unitCode: document.getElementById('codigo_acesso_sanger').value
+    };
+    if (!data.sangerName || !data.unitCode) {
+        alert("Por favor, preencha seu nome e o código de acesso da unidade.");
+        return;
+    }
+    fetch('api/solicitar_acesso.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            document.getElementById('login-container').innerHTML = `
+                <div class="login-header"><h1>Solicitação Enviada!</h1></div>
+                <div style="text-align: center; color: #ccc;">
+                    <p>Aguarde a aprovação do gestor. Após aprovado, ele irá criar seu usuário e senha para login.</p>
+                    <a href="login.php" class="button login-button mt-4" style="text-decoration:none;">OK</a>
+                </div>
+            `;
+        } else {
+            alert(result.message || 'Não foi possível enviar a solicitação.');
+        }
+    })
+    .catch(error => console.error('Erro na requisição do sanger:', error));
 }

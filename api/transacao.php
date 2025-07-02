@@ -41,7 +41,7 @@ if ($tipo_transacao === 'venda' || $tipo_transacao === 'devolucao') {
     }
 
     // Procura ou cria o jogador
-    $stmt_player = $conn->prepare("SELECT id FROM players WHERE nome = ? AND unidade_id = ?");
+    $stmt_player = $conn->prepare("SELECT id FROM players WHERE name = ? AND unidade_id = ?");
     $stmt_player->execute([$nome_jogador, $unidade_id]);
     $player = $stmt_player->fetch(PDO::FETCH_ASSOC);
 

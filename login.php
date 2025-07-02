@@ -1,7 +1,5 @@
 <?php
-// === login.php (VERSÃO FINAL E COMPLETA) ===
 session_start();
-// Se o usuário já está logado, redireciona para o dashboard
 if (isset($_SESSION['user_id'])) {
     header('Location: dashboard.php');
     exit();
@@ -23,18 +21,7 @@ if (isset($_SESSION['user_id'])) {
             <h1>Easy Rake</h1>
             <h2>Caixa - Cash Game</h2>
         </div>
-
         <form id="loginForm" class="login-form">
-            <div class="input-group">
-                <input type="text" id="username" name="username" class="input-field" placeholder=" " required>
-                <label for="username" class="input-label">Seu E-mail / Usuário</label>
-            </div>
-
-            <div class="input-group">
-                <input type="password" id="password" name="password" class="input-field" placeholder=" " required>
-                <label for="password" class="input-label">Senha</label>
-            </div>
-
             <div class="input-group">
                 <label class="static-label">Tipo de Acesso</label>
                 <div class="user-type-selector" id="userTypeSelector">
@@ -42,17 +29,32 @@ if (isset($_SESSION['user_id'])) {
                     <button type="button" class="user-type-option" data-profile="sanger">Sanger</button>
                 </div>
             </div>
-
-            <div class="input-group" id="access-code-group" style="display: none;">
-                <input type="text" id="codigo_acesso" name="codigo_acesso" class="input-field" placeholder=" ">
-                <label for="codigo_acesso" class="input-label">Código de Acesso</label>
+            <div id="gestor-caixa-fields">
+                <div class="input-group">
+                    <input type="text" id="username" name="username" class="input-field" placeholder=" " required>
+                    <label for="username" class="input-label">Seu E-mail / Usuário</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" class="input-field" placeholder=" " required>
+                    <label for="password" class="input-label">Senha</label>
+                </div>
             </div>
-
-            <button type="submit" class="login-button">Entrar</button>
-            <div class="login-footer"><a href="registro.php">Não tenho acesso. Cadastrar-se.</a></div>
+            <div id="sanger-fields" style="display: none;">
+                <div class="input-group">
+                    <input type="text" id="sangerName" name="sangerName" class="input-field" placeholder=" ">
+                    <label for="sangerName" class="input-label">Seu Nome</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="codigo_acesso_sanger" name="codigo_acesso" class="input-field" placeholder=" ">
+                    <label for="codigo_acesso_sanger" class="input-label">Código de Acesso da Unidade</label>
+                </div>
+            </div>
+            <button type="submit" id="main-action-button" class="login-button">Entrar</button>
+            <div class="login-footer">
+                <a id="footer-link" href="registro.php">Não tenho acesso. Cadastrar-se.</a>
+            </div>
         </form>
     </div>
-    
     <script src="js/auth.js"></script>
     <script src="js/main.js"></script>
 </body>

@@ -1,7 +1,5 @@
 <?php
-// registro.php
 session_start();
-// Se o usuário já estiver logado, não faz sentido ele se cadastrar.
 if (isset($_SESSION['user_id'])) {
     header('Location: dashboard.php');
     exit();
@@ -23,17 +21,17 @@ if (isset($_SESSION['user_id'])) {
             <h1>Crie sua Unidade</h1>
             <h2>Easy Rake</h2>
         </div>
-        <form id="registerForm">
+        <form id="registerGestorForm">
             <div class="input-group">
-                <input type="text" id="unitName" name="unitName" class="input-field" placeholder=" " required>
+                <input type="text" id="unitName" name="nome_unidade" class="input-field" placeholder=" " required>
                 <label for="unitName" class="input-label">Nome da sua Unidade/Clube</label>
             </div>
             <div class="input-group">
-                <input type="text" id="adminUsername" name="adminUsername" class="input-field" placeholder=" " required>
-                <label for="adminUsername" class="input-label">Seu Nome de Usuário (Gestor)</label>
+                <input type="email" id="adminEmail" name="email_gestor" class="input-field" placeholder=" " required>
+                <label for="adminEmail" class="input-label">Seu E-mail (será seu login)</label>
             </div>
             <div class="input-group">
-                <input type="password" id="adminPassword" name="adminPassword" class="input-field" placeholder=" " required>
+                <input type="password" id="adminPassword" name="senha_gestor" class="input-field" placeholder=" " required>
                 <label for="adminPassword" class="input-label">Sua Senha</label>
             </div>
             <button type="submit" class="login-button">Criar Unidade e Cadastrar</button>
@@ -44,59 +42,36 @@ if (isset($_SESSION['user_id'])) {
     </div>
     
     <script>
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
+    document.getElementById('registerGestorForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
-        // Pegamos os dados para usar na tela de sucesso
-        const unitName = formData.get('unitName');
-        const adminUsername = formData.get('adminUsername');
         
-        const registerButton = this.querySelector('button[type="submit"]');
-        registerButton.disabled = true;
-        registerButton.textContent = 'Processando...';
-
-        fetch('api/processar_registro.php', {
+        // Usaremos a API de registrar_unidade.php
+        fetch('api/registrar_unidade.php', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(formData))
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // SUCESSO! Em vez de um alerta, transformamos a tela.
-                const loginContainer = document.getElementById('login-container');
-                loginContainer.innerHTML = `
+                document.getElementById('login-container').innerHTML = `
                     <div class="login-header">
                         <h1>Unidade Criada!</h1>
                         <h2>Bem-vindo ao Easy Rake</h2>
                     </div>
-                    <div class="success-info">
-                        <p>Sua unidade <strong>${unitName}</strong> foi criada com sucesso. Abaixo estão seus dados de acesso principal.</p>
-                        <div class="access-details">
-                            <div><span>Seu Usuário (Gestor):</span><strong>${adminUsername}</strong></div>
-                            <div><span>Código da sua Unidade:</span><strong class="unit-code">${data.unitCode}</strong></div>
-                        </div>
-                        <p class="important-note">Guarde o <strong>Código da Unidade</strong>. Ele é a chave para que seus operadores (Caixa e Sanger) possam se conectar ao seu clube.</p>
-                    </div>
-                    <a href="login.php" class="button login-button mt-4">Ir para o Login</a>
-                `;
-                // Adicionamos um pouco de estilo para a nova tela
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    .success-info { text-align: center; color: #ccc; }
-                    .access-details { background-color: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 1rem; margin: 1.5rem 0; }
-                    .access-details div { display: flex; justify-content: space-between; padding: 0.5rem 0; }
-                    .access-details .unit-code { font-size: 1.5rem; color: #e51e3e; }
-                    .important-note { font-size: 0.9rem; color: #a0a0a0; }
-                    .login-button.mt-4 { margin-top: 1.5rem; text-decoration: none; display: inline-block; line-height: 1.5; }
-                `;
-                document.head.appendChild(style);
+                    <div style="text-align:center; color:#ccc;">
+                        <p>Sua unidade foi criada. Abaixo está a chave para seus operadores.</p>
+                        <p style="margin-top:1rem;">Código de Acesso da Unidade:</p>
+                        <p style="font-size: 2rem; color: #e51e3e; font-weight: bold; margin:0;">${data.codigo_acesso}</p>
+                        <p style="font-size: 0.8rem; color: #888;">(Guarde este código)</p>
+                        <a href="login.php" class="button login-button" style="margin-top: 2rem; text-decoration:none; display:inline-block; line-height:1.5;">Ir para o Login</a>
+                    </div>`;
             } else {
-                alert('Erro: ' + data.message);
-                registerButton.disabled = false;
-                registerButton.textContent = 'Criar Unidade e Cadastrar';
+                alert('Erro: ' + (data.message || 'Não foi possível criar a unidade.'));
             }
         });
     });
-</script>
+    </script>
 </body>
 </html>

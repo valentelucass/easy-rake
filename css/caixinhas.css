@@ -1,0 +1,117 @@
+/* === css/caixinhas.css (VERSÃO APRIMORADA) === */
+.caixinha-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+.caixinha-card {
+    background-color: #1c1c1c;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+.caixinha-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+.input-nome-caixinha {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.25rem;
+    width: 80%;
+    font-family: 'Inter', sans-serif;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+}
+.input-nome-caixinha:focus {
+    outline: none;
+    background-color: #2a2a2a;
+    border-bottom-color: #e51e3e;
+}
+.caixinha-toggle-icon {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    color: #a0a0a0;
+}
+.caixinha-card.collapsed .caixinha-toggle-icon {
+    transform: rotate(-90deg);
+}
+.caixinha-body {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out, opacity 0.3s ease;
+    margin-top: 1.5rem;
+    border-top: 1px solid #333;
+    padding-top: 1.5rem;
+    opacity: 1;
+}
+.caixinha-card.collapsed .caixinha-body {
+    max-height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    border-top-color: transparent;
+    opacity: 0;
+}
+.caixinha-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.caixinha-input-group { margin-bottom: 1rem; }
+.caixinha-input-group label {
+    font-size: 0.8rem;
+    color: #a0a0a0;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+.caixinha-input-group input { width: 100%; background-color: #27272a; }
+.caixinha-input-group input:disabled {
+    color: #a0a0a0;
+    background-color: #2a2a2a;
+    border-color: #3f3f46;
+    opacity: 0.7;
+}
+.caixinha-summary-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e51e3e;
+}
+.caixinha-entries {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 1rem;
+    max-height: 120px;
+    overflow-y: auto;
+    background-color: #121212;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+.caixinha-entries li {
+    background-color: #27272a;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.valor-cashback-display {
+    background-color: rgba(34, 197, 94, .1);
+    border: 1px solid rgba(34, 197, 94, .3);
+    color: #22c55e;
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 1rem;
+}
+.valor-cashback-display strong { font-size: 1.2rem; }

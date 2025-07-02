@@ -87,3 +87,119 @@ function deleteAllReports() {
     })
     .catch(error => console.error('Erro ao apagar relatórios:', error));
 }
+
+function displayReport(reportData, isFinal = false) {
+    const modal = document.getElementById('report-modal');
+    const modalTitle = document.getElementById('report-title');
+    const body = document.getElementById('report-body');
+    const user_info = dashboardState.user_info;
+
+    if (!modal || !modalTitle || !body) return;
+
+    modalTitle.textContent = isFinal ? 'Relatório de Fechamento de Caixa' : 'Relatório Parcial';
+
+    // --- Lógica de Cálculo Baseada na sua Especificação ---
+    const { caixa, transactions, players_details } = reportData;
+    const totalExpenses = parseFloat(caixa.total_expenses || 0);
+    const totalRake = parseFloat(caixa.total_rake || 0);
+    // Futuramente, o cashback das caixinhas virá aqui
+    const totalCashback = 0; 
+    const receitaEmpresa = totalRake + totalCashback;
+    const lucroPrejuizo = receitaEmpresa - totalExpenses;
+
+    // --- Montagem do HTML do Relatório ---
+
+    // Seção: Detalhes por Jogador
+    const playersHtml = (players_details || []).map(p => {
+        const totalComprado = transactions.filter(t => t.player_name === p.name && t.type === 'venda').reduce((sum, t) => sum + parseFloat(t.amount), 0);
+        const totalDevolvido = transactions.filter(t => t.player_name === p.name && t.type === 'devolucao').reduce((sum, t) => sum + parseFloat(t.amount), 0);
+        const saldo = totalDevolvido - totalComprado;
+        return `<tr>
+                    <td>${p.name}</td>
+                    <td class="currency">${formatCurrency(totalComprado)}</td>
+                    <td class="currency">${formatCurrency(totalDevolvido)}</td>
+                    <td class="currency" style="color:${saldo < 0 ? '#ef4444' : '#22c55e'};">${formatCurrency(saldo)}</td>
+                </tr>`;
+    }).join('');
+
+    // Seção: Lista de Despesas
+    const expensesHtml = transactions.filter(t => t.type === 'despesa').map(e => `<tr><td>${e.description}</td><td class="currency">${formatCurrency(e.amount)}</td></tr>`).join('');
+
+    const reportHTML = `
+        <div class="recibo-container">
+            <h2 class="recibo-title">RELATÓRIO DE SESSÃO</h2>
+            <div class="recibo-section">
+                <p><strong>Unidade:</strong> ${user_info.nome} (${user_info.codigo_acesso})</p>
+                <p><strong>Operador:</strong> ${user_info.nome}</p>
+                <p><strong>Gerado em:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+            </div>
+            <hr class="recibo-hr">
+
+            <h3>Resumo Geral da Empresa</h3>
+            <div class="recibo-section">
+                <p><strong>(+) Rake Total:</strong> ${formatCurrency(totalRake)}</p>
+                <p><strong>(+) Cashback Caixinhas:</strong> ${formatCurrency(totalCashback)}</p>
+                <p style="border-bottom: 1px solid #444; padding-bottom: 0.5rem;"><strong>= Receita Total:</strong> ${formatCurrency(receitaEmpresa)}</p>
+                <p><strong>(-) Despesas Totais:</strong> ${formatCurrency(totalExpenses)}</p>
+                <p style="font-size: 1.2rem;"><strong>= LUCRO/PREJUÍZO:</strong> <span style="color:${lucroPrejuizo < 0 ? '#ef4444' : '#22c55e'};">${formatCurrency(lucroPrejuizo)}</span></p>
+            </div>
+            <hr class="recibo-hr">
+
+            <h3>Controle de Fichas</h3>
+            <div class="recibo-section">
+                 <p><strong>(+) Fichas Vendidas:</strong> ${formatCurrency(caixa.total_sales)}</p>
+                 <p><strong>(-) Fichas Devolvidas:</strong> ${formatCurrency(caixa.total_returns)}</p>
+            </div>
+            <hr class="recibo-hr">
+
+            <h3>Detalhamento por Jogador</h3>
+            <table class="report-table">
+                <thead><tr><th>Nome</th><th class="currency">Comprou</th><th class="currency">Devolveu</th><th class="currency">Saldo</th></tr></thead>
+                <tbody>${playersHtml || '<tr><td colspan="4">Nenhuma movimentação de jogadores.</td></tr>'}</tbody>
+            </table>
+
+            <h3 style="margin-top: 2rem;">Detalhamento de Despesas</h3>
+            <table class="report-table">
+                <thead><tr><th>Descrição</th><th class="currency">Valor</th></tr></thead>
+                <tbody>${expensesHtml || '<tr><td colspan="2">Nenhuma despesa registrada.</td></tr>'}</tbody>
+            </table>
+
+            ${isFinal ? `
+                <hr class="recibo-hr">
+                <h3>Fechamento do Caixa</h3>
+                <div class="recibo-section final-values">
+                    <p><strong>VALOR REAL CONFERIDO:</strong> ${formatCurrency(caixa.final_amount)}</p>
+                </div>` : ''
+            }
+
+            <div class="modal-footer" style="text-align: right; margin-top: 2rem;">
+                <button id="btnPrintReport" class="button">Imprimir Relatório</button>
+            </div>
+        </div>
+    `;
+
+    body.innerHTML = reportHTML;
+    document.getElementById('btnPrintReport').addEventListener('click', () => window.print());
+    modal.style.display = 'flex';
+
+document.getElementById('btn-close-modal').onclick = () => {
+    modal.style.display = 'none';
+
+    // Se for um relatório final, realizamos a limpeza da tela manualmente.
+    if (isFinal) {
+        // Remove o botão "Continuar Sessão" da tela
+        window.location.reload();
+        const continueWrapper = document.getElementById('continue-session-wrapper');
+        if (continueWrapper) {
+            continueWrapper.innerHTML = ''; 
+        }
+
+        // Reseta o estado do caixa no nosso objeto global de JavaScript
+        dashboardState.caixa = null;
+
+        // Garante que a tela de abrir caixa seja a única visível
+        document.getElementById('app-screen').style.display = 'none';
+        document.getElementById('open-cashier-screen').style.display = 'block';
+    }
+};
+}

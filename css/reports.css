@@ -67,3 +67,102 @@
     .report-table td, .report-table th { border-bottom: 1px solid #ccc; padding: .4rem; }
     .report-table thead { color: #000; }
 }
+
+/* === Adicionar ao final de reports.css === */
+
+.recibo-container {
+    font-family: 'Courier New', Courier, monospace;
+    color: #333;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+@media screen {
+    .recibo-container {
+        color: #fff;
+        background-color: #18181b;
+        border: none;
+    }
+}
+
+.recibo-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.recibo-section {
+    margin-bottom: 1.5rem;
+}
+
+.recibo-section h3 {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.recibo-section p {
+    margin: 0.5rem 0;
+    background: none;
+    padding: 0;
+    font-size: 1rem;
+}
+
+.recibo-hr {
+    border: none;
+    border-top: 1px dashed #555;
+    margin: 1.5rem 0;
+}
+
+.final-values p {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.signatures {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 3rem;
+}
+
+.signature-block {
+    text-align: center;
+    width: 45%;
+}
+
+.signature-line {
+    border-bottom: 1px solid #333;
+    margin-bottom: 0.5rem;
+    min-height: 40px;
+}
+
+.signature-name {
+    font-size: 0.8rem !important;
+}
+
+.recibo-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #3f3f46;
+}
+
+.recibo-footer .button {
+    width: auto;
+}
+
+@media print {
+    .recibo-container {
+        color: #000 !important;
+    }
+    .signature-line {
+        border-bottom: 1px solid #000;
+    }
+    .recibo-footer {
+        display: none !important;
+    }
+}
