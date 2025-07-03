@@ -11,6 +11,20 @@ if (!isset($_SESSION['unidade_id'])) {
 }
 
 $unidade_id = $_SESSION['unidade_id'];
+
+try {
+    $sql_cleanup = "UPDATE cashier_sessions 
+                    SET status = 'closed', closed_at = NOW(), final_amount = initial_amount 
+                    WHERE unidade_id = ? 
+                      AND status = 'open' 
+                      AND opened_at < NOW() - INTERVAL 12 HOUR";
+    $stmt_cleanup = $conn->prepare($sql_cleanup);
+    $stmt_cleanup->execute([$unidade_id]);
+} catch (PDOException $e) {
+    // Apenas registra o erro, não para a execução principal.
+    error_log("Erro durante a limpeza automática de sessões: " . $e->getMessage());
+}
+
 $response = [
     'success' => true,
     'user_info' => [

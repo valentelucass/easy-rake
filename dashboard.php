@@ -13,11 +13,7 @@ $userProfile = $_SESSION['perfil'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Easy Rake - Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/reports.css">
-    <link rel="stylesheet" href="css/mobile.css">
-    <link rel="stylesheet" href="css/caixinhas.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <div id="open-cashier-screen" class="app-container">
@@ -26,7 +22,7 @@ $userProfile = $_SESSION['perfil'];
                 <h1 class="app-title">Caixa - Cash Game</h1>
                 <p id="welcome-message-open-cashier" class="text-muted"></p>
             </div>
-            <button id="logoutButton-open-cashier" class="button secondary">Sair</button>
+            <button id="logoutButton-open-cashier" class="button button--secondary">Sair</button>
         </header>
         <main>
             <div id="continue-session-wrapper"></div>
@@ -36,7 +32,7 @@ $userProfile = $_SESSION['perfil'];
                     <label for="initialCashValue">Valor Inicial (R$)</label>
                     <input type="number" id="initialCashValue" placeholder="0,00">
                 </div>
-                <button id="btn-abrir-caixa" class="button">Abrir Caixa</button>
+                <button id="btn-abrir-caixa" class="button button--primary">Abrir Caixa</button>
             </section>
         </main>
     </div>
@@ -52,7 +48,7 @@ $userProfile = $_SESSION['perfil'];
                 <h1 id="app-title"></h1>
                 <p id="welcome-message"></p>
             </div>
-            <button id="logoutButton" class="button secondary">Sair</button>
+            <button id="logoutButton" class="button button--secondary">Sair</button>
         </header>
         <div id="tabs-container" class="tabs-container"></div>
 <main id="main-content">
@@ -60,19 +56,19 @@ $userProfile = $_SESSION['perfil'];
                 <section class="content-section">
                     <h2 class="section-title">Gerenciamento de Caixa - Unidade <span id="unit-code-display"></span></h2>
                     <div class="dashboard-grid">
-                        <div class="dashboard-card">
+                        <div class="dashboard-card positive-card">
                             <h3 class="card-title">Fichas Vendidas</h3>
                             <p id="fichas-vendidas-val" class="card-value positive">R$ 0,00</p>
                         </div>
-                        <div class="dashboard-card">
+                        <div class="dashboard-card negative-card">
                             <h3 class="card-title">Fichas Devolvidas</h3>
                             <p id="fichas-devolvidas-val" class="card-value negative">R$ 0,00</p>
                         </div>
-                        <div class="dashboard-card">
+                        <div class="dashboard-card positive-card">
                             <h3 class="card-title">Rake</h3>
                             <p id="rake-val" class="card-value positive">R$ 0,00</p>
                         </div>
-                        <div class="dashboard-card">
+                        <div class="dashboard-card negative-card">
                             <h3 class="card-title">Despesas</h3>
                             <p id="despesas-val" class="card-value negative">R$ 0,00</p>
                         </div>
@@ -84,18 +80,18 @@ $userProfile = $_SESSION['perfil'];
                         <label for="rakeValue">Adicionar Rake (R$)</label>
                         <input type="number" id="rakeValue" placeholder="0,00">
                     </div>
-                    <button id="btn-adicionar-rake" class="button">Adicionar Rake</button>
+                    <button id="btn-adicionar-rake" class="button button--primary">Adicionar Rake</button>
                     <div id="rake-summary" class="rake-total-display">
                         Rake Total: <strong id="rake-total-val">R$ 0,00</strong>
                     </div>
                     <h4 class="history-title">Histórico de Rake</h4>
                     <ul id="rake-history-list" class="rake-history"></ul>
-                    <button id="btn-comprovante-rake" class="button secondary mt-4">Gerar Comprovante de Rake Parcial</button>
+                    <button id="btn-comprovante-rake" class="button button--secondary mt-4">Gerar Comprovante de Rake Parcial</button>
                 </section>
                 <section class="content-section">
                     <h2 class="section-title">Caixinhas</h2>
                     <div id="caixinhas-wrapper" class="caixinha-container"></div>
-                    <button id="btn-add-caixinha" class="button secondary mt-4">Adicionar Nova Caixinha</button>
+                    <button id="btn-add-caixinha" class="button button--secondary mt-4">Adicionar Nova Caixinha</button>
                 </section>
                 <section class="content-section">
                     <h2 class="section-title">Gastos da Empresa</h2>
@@ -107,7 +103,7 @@ $userProfile = $_SESSION['perfil'];
                         <label for="expenseValue">Valor (R$)</label>
                         <input type="number" id="expenseValue" placeholder="0,00">
                     </div>
-                    <button id="btn-adicionar-gasto" class="button">Adicionar Gasto</button>
+                    <button id="btn-adicionar-gasto" class="button button--primary">Adicionar Gasto</button>
                     <div class="history-table-container mt-4">
                         <table class="report-table">
                             <thead>
@@ -150,8 +146,8 @@ $userProfile = $_SESSION['perfil'];
                         <span id="closing-difference">R$ 0,00</span>
                     </div>
                     <div class="action-buttons mt-4">
-                        <button id="btn-fechar-caixa" class="button">Fechar Caixa e Gerar Relatório</button>
-                        <button id="btn-relatorio-parcial" class="button secondary">Gerar Relatório Parcial</button>
+                        <button id="btn-fechar-caixa" class="button button--primary">Fechar Caixa e Gerar Relatório</button>
+                        <button id="btn-relatorio-parcial" class="button button--secondary">Gerar Relatório Parcial</button>
                     </div>
                 </section>
             </div>
@@ -176,8 +172,8 @@ $userProfile = $_SESSION['perfil'];
                         <input type="number" id="chipValue" placeholder="0,00">
                     </div>
                     <div class="action-buttons">
-                        <button id="btn-vender-fichas" class="button">Vender Fichas</button>
-                        <button id="btn-devolver-fichas" class="button destructive">Devolver Fichas</button>
+                        <button id="btn-vender-fichas" class="button button--primary">Vender Fichas</button>
+                        <button id="btn-devolver-fichas" class="button button--destructive">Devolver Fichas</button>
                     </div>
 
                     <hr style="margin: 2.5rem 0; border-color: #282828;">
@@ -203,21 +199,20 @@ $userProfile = $_SESSION['perfil'];
             <div id="aprovacoes-content" class="tab-content">
                 <section class="content-section">
                     <h2 class="section-title">Solicitações de Acesso Pendentes</h2>
-                    </section>
+                </section>
             </div>
         </main>
     </div>
     <!-- Início do player-details-modal -->
     <div id="player-details-modal" class="modal-container">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
-                <h2 id="player-details-title">Detalhes do Jogador</h2>
-                <button id="player-details-close" class="close-button">&times;</button>
+                <h2 id="player-details-title"></h2>
+                <button class="close-button" id="player-details-close">&times;</button>
             </div>
-            <div id="player-details-body" class="modal-body">
-                </div>
+            <div class="modal-body" id="player-details-body"></div>
             <div class="modal-footer">
-                <button id="btn-print-player-details" class="button">Imprimir Situação</button>
+                <button id="btn-print-player-details" class="button button--primary">Imprimir</button>
             </div>
         </div>
     </div>
@@ -238,15 +233,27 @@ $userProfile = $_SESSION['perfil'];
     </div>
     <!-- Fim do report-modal -->
 
-    <script>
-        // Esta variável global é usada pelos scripts para saber o perfil do usuário logado.
-        const loggedInUserProfile = "<?php echo $userProfile; ?>";
-    </script>
-    <script src="js/reports.js"></script>
-    <script src="js/caixa.js"></script>
-    <script src="js/fichas.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/dashboard.js"></script>
+    <!-- Modal de Transação Rápida -->
+    <div id="quick-transaction-modal" class="modal-container">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 id="quick-transaction-title"></h2>
+                <button class="close-button" id="quick-transaction-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="quick-transaction-value">Valor das Fichas (R$)</label>
+                    <input type="number" id="quick-transaction-value" placeholder="0,00" min="0" step="0.01">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="quick-transaction-confirm" class="button button--primary button--small">Confirmar</button>
+                <button id="quick-transaction-cancel" class="button button--secondary button--small">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+<script type="module" src="js/features/dashboard.js"></script>
 
 </body>
 </html>

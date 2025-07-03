@@ -1,0 +1,11 @@
+/* css/base/_global.css */
+/* Estilos que se aplicam a toda a aplicação. */
+
+/* Importação da fonte global do projeto */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+}

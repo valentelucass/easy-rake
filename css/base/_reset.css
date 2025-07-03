@@ -1,0 +1,28 @@
+/* css/base/_reset.css */
+/* Um reset moderno para começar com uma base limpa. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Garante que padding e borda não afetem o tamanho final do elemento. */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased; /* Melhora a renderização da fonte em telas de alta resolução. */
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit; /* Garante que os elementos de formulário herdem a fonte do body. */
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word; /* Evita que palavras longas quebrem o layout. */
+}

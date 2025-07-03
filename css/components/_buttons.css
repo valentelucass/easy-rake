@@ -1,0 +1,301 @@
+/* css/components/_buttons.css */
+/* Sistema de Botões Global - Metodologia BEM */
+
+/* === BASE BUTTON CLASS === */
+/* Contém todas as propriedades compartilhadas para todos os botões */
+.button {
+    /* Layout e Display */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+    /* Espaçamento Flexível (resolve problema de texto "squeezed") */
+    padding: 0.8em 1.6em;
+    min-height: 2.5em;
+    
+    /* Tipografia */
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    
+    /* Aparência */
+    border: none;
+    border-radius: 8px;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    
+    /* Comportamento */
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    
+    /* Transições Suaves */
+    transition: all var(--transition-speed) ease;
+    transition-property: background-color, color, border-color, transform, box-shadow;
+}
+
+/* === ESTADOS GLOBAIS PARA TODOS OS BOTÕES === */
+
+/* Hover State Global */
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Active State Global */
+.button:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* Focus State Global */
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(229, 30, 62, 0.3);
+}
+
+/* Disabled State Global */
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* === EFEITO DE BRILHO (OPCIONAL) === */
+.button:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 75%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transform: skewX(-25deg);
+    transition: left 0.6s ease;
+    animation: shimmer 0.6s ease-out;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 150%; }
+}
+
+/* === MODIFICADORES DE TAMANHO === */
+
+/* Botão Compacto */
+.button--compact {
+    width: auto;
+    padding: 0.5em 1em;
+    font-size: 0.9rem;
+    min-width: 80px;
+    min-height: 2.2em;
+}
+
+/* Botão Pequeno */
+.button--small {
+    padding: 0.6em 1.2em;
+    font-size: 0.875rem;
+    min-height: 2.2em;
+}
+
+/* Botão Grande */
+.button--large {
+    padding: 1em 2em;
+    font-size: 1.125rem;
+    min-height: 3em;
+}
+
+/* === MODIFICADORES DE ESTILO === */
+
+/* Modificador: Primário (Padrão - já aplicado na base) */
+.button--primary {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+}
+
+.button--primary:hover {
+    background-color: var(--accent-color-hover);
+}
+
+/* Modificador: Secundário */
+.button--secondary {
+    background-color: var(--surface-color);
+    color: var(--text-muted-color);
+    border: 1px solid var(--border-color);
+}
+
+.button--secondary:hover {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--border-color-light);
+    color: var(--text-color);
+}
+
+/* Modificador: Outline */
+.button--outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted-color);
+}
+
+.button--outline:hover {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--border-color-light);
+    color: var(--text-color);
+}
+
+/* Modificador: Destrutivo */
+.button--destructive {
+    background-color: var(--negative-color);
+    color: var(--text-color);
+}
+
+.button--destructive:hover {
+    background-color: #dc2626; /* Tom mais escuro do vermelho */
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Modificador: Sucesso */
+.button--success {
+    background-color: var(--positive-color);
+    color: var(--text-color);
+}
+
+.button--success:hover {
+    background-color: #16a34a; /* Tom mais escuro do verde */
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+/* Modificador: Info */
+.button--info {
+    background-color: var(--info-color);
+    color: var(--text-color);
+}
+
+.button--info:hover {
+    background-color: #2563eb; /* Tom mais escuro do azul */
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Modificador: Ghost (Transparente) */
+.button--ghost {
+    background-color: transparent;
+    color: var(--text-muted-color);
+    border: 1px solid transparent;
+}
+
+.button--ghost:hover {
+    background-color: var(--dark-bg-tertiary);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+/* === MODIFICADORES DE LARGURA === */
+
+/* Botão de Largura Automática */
+.button--auto {
+    width: auto;
+}
+
+/* Botão de Largura Fixa */
+.button--fixed {
+    width: 120px;
+}
+
+/* === COMPATIBILIDADE COM CLASSES LEGADAS === */
+/* Mantém compatibilidade com código existente */
+
+.button.secondary {
+    background-color: var(--surface-color);
+    color: var(--text-muted-color);
+    border: 1px solid var(--border-color);
+}
+
+.button.secondary:hover {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--border-color-light);
+    color: var(--text-color);
+}
+
+.button.secondary-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted-color);
+}
+
+.button.secondary-outline:hover {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--border-color-light);
+    color: var(--text-color);
+}
+
+.button.destructive {
+    background-color: var(--negative-color);
+    color: var(--text-color);
+}
+
+.button.destructive:hover {
+    background-color: #dc2626;
+}
+
+.button.success {
+    background-color: var(--positive-color);
+    color: var(--text-color);
+}
+
+.button.success:hover {
+    background-color: #16a34a;
+}
+
+.button.compact {
+    width: auto;
+    padding: 0.5em 1em;
+    font-size: 0.9rem;
+    min-width: 80px;
+    min-height: 2.2em;
+}
+
+.table-action-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+.table-action-group .button {
+    width: 140px;
+    min-width: 100px;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 10px;
+    font-size: 1rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+@media (max-width: 600px) {
+    .table-action-group .button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+@media (min-width: 600px) {
+    .table-action-group {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.7rem;
+        width: 100%;
+    }
+    .table-action-group .button {
+        width: 100%;
+        min-width: 0;
+        flex: 1 1 0;
+        margin: 0;
+        max-width: none;
+    }
+}

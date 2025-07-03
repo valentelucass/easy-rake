@@ -1,0 +1,16 @@
+/* css/pages/tab-aprovacoes.css */
+/* Estilos para a aba de aprovações. (Pode ser populado no futuro) */
+
+.request-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.request-card .request-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}

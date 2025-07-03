@@ -1,0 +1,190 @@
+/* css/features/caixinhas.css */
+/* Overhaul visual completo do componente Caixinhas (Tip Jars) */
+
+.caixinha-card {
+    background: var(--dark-bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+    overflow: hidden;
+    color: var(--text-color);
+    transition: box-shadow 0.2s;
+}
+.caixinha-card.collapsed .caixinha-body {
+    display: none;
+}
+.caixinha-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--dark-bg-tertiary);
+    padding: 1.25rem 2rem 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color-light);
+    cursor: pointer;
+}
+.caixinha-header .input-nome-caixinha {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    outline: none;
+    padding: 0;
+}
+.caixinha-header .input-nome-caixinha::placeholder {
+    color: var(--text-muted-color);
+    opacity: 0.7;
+}
+.caixinha-toggle-icon {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    margin-left: 1rem;
+    transition: transform 0.2s;
+}
+.caixinha-card.collapsed .caixinha-toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.caixinha-body {
+    padding: 2rem 2rem 1.5rem 2rem;
+    background: var(--dark-bg-secondary);
+}
+
+.caixinha-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: 1.5rem;
+}
+
+.caixinha-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.caixinha-input-group label {
+    font-size: 0.92rem;
+    color: var(--text-muted-color);
+    font-weight: 500;
+    margin-bottom: 0.1rem;
+}
+
+.caixinha-card input[type="text"],
+.caixinha-card input[type="number"] {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 1.05rem;
+    transition: border 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+.caixinha-card input[type="text"]:focus,
+.caixinha-card input[type="number"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+.caixinha-card input[disabled] {
+    opacity: 0.7;
+    background: var(--dark-bg-tertiary);
+    color: var(--text-muted-color);
+    cursor: not-allowed;
+}
+
+.caixinha-valor-entrada {
+    width: 100%;
+}
+
+.button.btn-inserir-valor {
+    width: 100%;
+    padding: 0.7rem 0;
+    font-size: 1rem;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+}
+.button.btn-inserir-valor:hover {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.caixinha-entries {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.2rem 0;
+    max-height: 120px;
+    overflow-y: auto;
+}
+.caixinha-entries li {
+    background: var(--surface-color);
+    color: var(--text-color);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color-light);
+}
+
+.valor-cashback-display {
+    background: linear-gradient(90deg, rgba(34,197,94,0.08), rgba(34,197,94,0.18));
+    border: 1px solid rgba(34,197,94,0.25);
+    color: var(--positive-color);
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin: 1.2rem 0 1.2rem 0;
+    font-size: 1.08rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.valor-cashback-display strong {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--positive-color);
+    margin-left: 0.5rem;
+}
+
+.caixinha-final-value-wrapper,
+.caixinha-input-group:last-child {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+.output-valor-final {
+    display: inline-block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 700px) {
+    .caixinha-body {
+        padding: 1.2rem 0.7rem 1rem 0.7rem;
+    }
+    .caixinha-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Scrollbar customizada para entradas */
+.caixinha-entries::-webkit-scrollbar {
+    width: 6px;
+}
+.caixinha-entries::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+.caixinha-entries::-webkit-scrollbar-track {
+    background: transparent;
+}

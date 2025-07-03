@@ -1,0 +1,7 @@
+/* css/pages/tab-fichas.css */
+/* Estilos que se aplicam somente aos elementos da aba 'Fichas'. */
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}

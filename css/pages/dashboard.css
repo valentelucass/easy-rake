@@ -1,0 +1,35 @@
+/* css/pages/dashboard.css */
+/* Estilos para a 'casca' do dashboard, como a navegação por abas. */
+
+.tabs-container {
+    display: flex;
+    border-bottom: 1px solid var(--border-color-light);
+    margin-bottom: 2.5rem;
+}
+
+.tab-button {
+    padding: 0.75rem 0;
+    margin-right: 2rem;
+    background: none;
+    border: none;
+    color: var(--text-muted-color);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    font-size: 1rem;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.tab-button.active,
+.tab-button:hover {
+    color: var(--text-color);
+}
+
+.tab-button.active {
+    border-bottom-color: var(--accent-color);
+    font-weight: 600;
+}
+
+.tab-content {
+    display: none; /* Controlado via JS */
+}

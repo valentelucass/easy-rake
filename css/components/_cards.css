@@ -1,0 +1,46 @@
+/* css/components/_cards.css */
+/* Estilos aprimorados e centralizados para todos os tipos de cards. */
+
+/* --- Card Base (Estilo padrão para todos) --- */
+.dashboard-card,
+.summary-card {
+    border-radius: 12px; /* Bordas mais suaves */
+    padding: 1.5rem;
+    text-align: center;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.dashboard-card:hover,
+.summary-card:hover {
+    transform: translateY(-4px); /* Efeito sutil de elevação */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Títulos e Valores dentro dos Cards --- */
+.card-title {
+    margin: 0 0 0.75rem 0; /* Aumenta o espaço entre o título e o valor */
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-value {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-color); /* Cor padrão do valor */
+}
+
+/* --- Variações de Cores para o TEXTO dos Valores --- */
+.card-value.positive {
+    color: var(--positive-color);
+}
+
+.card-value.negative {
+    color: var(--negative-color);
+}

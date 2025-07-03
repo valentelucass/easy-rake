@@ -1,0 +1,29 @@
+/* css/main.css */
+/* Este é o ponto de entrada para todos os nossos estilos. */
+
+/* 1. Base - Fundações do projeto */
+@import url('base/_reset.css');
+@import url('base/_variables.css');
+@import url('base/_global.css');
+
+/* 2. Components - Blocos de construção reutilizáveis */
+@import url('components/_buttons.css');
+@import url('components/_cards.css');
+@import url('components/_forms.css');
+@import url('components/_modals.css');
+@import url('components/_tables.css');
+
+/* 3. Layouts - Estrutura principal das páginas */
+@import url('layouts/_app-container.css');
+@import url('layouts/_login-layout.css');
+
+/* 4. Pages - Estilos específicos de cada página */
+@import url('pages/login.css');
+@import url('pages/dashboard.css');
+@import url('pages/tab-caixa.css');
+@import url('pages/tab-fichas.css');
+@import url('pages/tab-aprovacoes.css');
+
+/* 5. Features - Estilos de componentes complexos */
+@import url('features/caixinhas.css');
+@import url('features/reports.css');

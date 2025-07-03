@@ -1,0 +1,269 @@
+/* css/features/reports.css */
+/* Estilos para a formatação de relatórios e comprovantes. */
+
+.recibo-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 2.5rem auto;
+    background: var(--surface-color);
+    color: var(--text-color);
+    border-radius: 18px;
+    box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18);
+    padding: 2.5rem 3.5rem 2.5rem 3.5rem;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+}
+
+.report-title {
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+.report-meta {
+    text-align: center;
+    color: var(--text-muted-color);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.report-summary-section {
+    background: var(--dark-bg-tertiary);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 1px 8px 0 rgba(0,0,0,0.06);
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color-light);
+    font-size: 1.08rem;
+}
+.summary-row:last-child {
+    border-bottom: none;
+}
+.summary-label {
+    color: var(--text-muted-color);
+    font-weight: 500;
+}
+.summary-value {
+    font-weight: 700;
+    font-size: 1.13rem;
+}
+.summary-row.summary-total {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    background: rgba(229,30,62,0.06);
+    border-radius: 6px;
+    margin-top: 0.7rem;
+    margin-bottom: 0.2rem;
+    padding: 0.7rem 0.5rem;
+}
+.summary-row.summary-total.positive {
+    color: var(--positive-color);
+    background: rgba(34,197,94,0.08);
+}
+.summary-row.summary-total.negative {
+    color: var(--negative-color);
+    background: rgba(239,68,68,0.08);
+}
+
+.report-section {
+    margin-top: 1.5rem;
+}
+.report-section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 0.7rem;
+    letter-spacing: 0.5px;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--dark-bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.2rem;
+}
+.report-table th, .report-table td {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-size: 1.05rem;
+}
+.report-table th {
+    background: var(--dark-bg-tertiary);
+    color: var(--text-muted-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+}
+.report-table td {
+    border-bottom: 1px solid var(--border-color-light);
+}
+.report-table tr:last-child td {
+    border-bottom: none;
+}
+.report-table .currency {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.report-footer-btns {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.rake-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+.rake-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.7rem;
+    background: var(--dark-bg-secondary);
+    border-radius: 6px;
+    font-size: 1.08rem;
+    border-bottom: 1px solid var(--border-color-light);
+}
+.rake-row:last-child {
+    border-bottom: none;
+}
+.rake-date {
+    color: var(--text-muted-color);
+    font-size: 1.01rem;
+}
+.rake-value {
+    font-weight: 700;
+    color: var(--positive-color);
+    font-size: 1.13rem;
+    margin-left: 1.2rem;
+}
+
+/* PRINT FIXES */
+@media print {
+    body > *:not(.modal-container) { display: none !important; }
+    .modal-container, .modal-content { position: static !important; overflow: visible !important; box-shadow: none !important; }
+    .modal-content { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+    .recibo-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 15mm !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+        color: #000 !important;
+    }
+    .report-footer-btns { display: none !important; }
+}
+
+/* --- Recibo Térmico Profissional para Comprovante de Venda --- */
+.comprovante-container {
+    width: 80mm;
+    max-width: 80mm;
+    margin: 24px auto;
+    background: #fff !important;
+    color: #000 !important;
+    font-family: 'Courier New', 'Lucida Console', monospace !important;
+    font-size: 10pt !important;
+    line-height: 1.5;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 18px 10px 18px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+    border: 1px solid #eee;
+}
+.comprovante-container .comp-title {
+    text-align: center;
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-bottom: 0.1em;
+    letter-spacing: 1px;
+}
+.comprovante-container .comp-subtitle {
+    text-align: center;
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+}
+.comp-info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+    margin: 0.1em 0;
+    padding-bottom: 0.1em;
+}
+.comp-info-row span {
+    white-space: pre;
+}
+.comp-hr {
+    border: none;
+    border-bottom: 1px dashed #000;
+    margin: 0.5em 0 0.5em 0;
+}
+.comp-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.15em;
+    font-weight: bold;
+    border-top: 2px solid #000;
+    margin-top: 0.5em;
+    padding-top: 0.3em;
+}
+.comp-total-row .comp-value {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Botão de impressão no modal (não imprime) */
+.comprovante-container .modal-footer, .comprovante-container .report-footer-btns {
+    display: none !important;
+}
+
+/* --- PRINT FIXES --- */
+@media print {
+    body > *:not(.modal-container) { display: none !important; }
+    .modal-container, .modal-content {
+        position: static !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        overflow: visible !important;
+    }
+    .modal-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .comprovante-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        border: none !important;
+        background: #fff !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        font-size: 10pt !important;
+    }
+    .comprovante-container .modal-footer, .comprovante-container .report-footer-btns { display: none !important; }
+}

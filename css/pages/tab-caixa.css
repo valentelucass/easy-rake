@@ -1,0 +1,246 @@
+/* css/pages/tab-caixa.css */
+/* VERSÃO FINAL E REFINADA */
+/* Estilos que se aplicam somente aos elementos da aba 'Caixa', com foco em espaçamento e clareza visual. */
+
+/* --- Contêineres de Seção --- */
+.content-section {
+    background-color: var(--dark-bg-secondary);
+    padding: 2rem;
+    border-radius: 16px; /* Bordas mais suaves */
+    margin-bottom: 2.5rem; /* Mais espaço entre as seções */
+}
+
+.section-title {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+/* --- Grid do Gerenciamento de Caixa (VERSÃO FINAL REFINADA) --- */
+.dashboard-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "fichas-vendidas rake"
+        "fichas-devolvidas despesas";
+}
+
+.dashboard-card.fichas-vendidas { grid-area: fichas-vendidas; }
+.dashboard-card.fichas-devolvidas { grid-area: fichas-devolvidas; }
+.dashboard-card.rake { grid-area: rake; }
+.dashboard-card.despesas { grid-area: despesas; }
+
+@media (max-width: 700px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: none;
+    }
+    .dashboard-card { grid-area: unset !important; }
+}
+
+/* O estilo base do card agora é definido em components/_cards.css.
+  Aqui, adicionamos apenas os detalhes visuais específicos desta seção.
+*/
+.dashboard-card {
+    /* Adiciona uma borda superior colorida para dar significado visual */
+    border-top: 4px solid;
+    padding-top: calc(1.5rem - 4px); /* Ajusta o padding para compensar a borda */
+}
+
+/* Cor da borda para cards de ENTRADA de dinheiro */
+.dashboard-card.positive-card {
+    border-color: var(--positive-color);
+}
+
+/* Cor da borda para cards de SAÍDA de dinheiro */
+.dashboard-card.negative-card {
+    border-color: var(--negative-color);
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-value {
+    margin-top: auto; /* Empurra o valor para a parte inferior, após o título */
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-color);
+}
+
+.card-value.positive {
+    color: var(--positive-color);
+}
+
+.card-value.negative {
+    color: var(--negative-color);
+}
+
+/* --- Seção de Rake --- */
+.rake-total-display {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(34, 197, 94, 0.05), rgba(34, 197, 94, 0.15));
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.rake-total-display .card-title { /* Reutilizando a classe de card */
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.rake-total-display strong {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--positive-color);
+    line-height: 1.2;
+}
+
+.history-title {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text-muted-color);
+}
+
+.rake-history {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px; /* Altura máxima para a lista rolável */
+    overflow-y: auto;
+    padding-right: 10px; /* Espaço para a barra de rolagem */
+}
+
+.rake-history li {
+    background-color: var(--surface-color);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.rake-history li:hover {
+    border-color: var(--border-color);
+    transform: translateX(4px);
+}
+
+.rake-history li span:first-child {
+    color: var(--text-muted-color);
+    font-size: 0.9rem;
+}
+
+.rake-history li .currency {
+    font-weight: 600;
+    color: var(--positive-color);
+    font-size: 1.1rem;
+}
+
+/* --- Seção de Resumo Financeiro --- */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.summary-card {
+    background-color: transparent;
+}
+
+.summary-card.revenue {
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    background: linear-gradient(145deg, rgba(34, 197, 94, 0.05), rgba(34, 197, 94, 0.15));
+}
+.summary-card.revenue .card-value { color: var(--positive-color); }
+
+.summary-card.expenses {
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    background: linear-gradient(145deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.15));
+}
+.summary-card.expenses .card-value { color: var(--negative-color); }
+
+.summary-card.balance {
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    background: linear-gradient(145deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.15));
+}
+.summary-card.balance .card-value { color: var(--info-color); }
+
+/* --- Seção de Fechamento de Caixa --- */
+.closing-box {
+    border: 1px solid var(--accent-color);
+    background-color: rgba(229, 30, 62, 0.05);
+}
+
+.closing-box .input-group {
+    margin-bottom: 1.5rem; /* Espaçamento entre os campos */
+}
+
+.difference-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0; /* Mais espaço vertical */
+    border-radius: 8px;
+    background-color: var(--dark-bg-tertiary);
+    font-size: 1.1rem;
+}
+
+.difference-display span:first-child {
+    font-weight: 500;
+    color: var(--text-muted-color);
+}
+
+.difference-display span:last-child {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.closing-box .action-buttons {
+    display: flex;
+    gap: 1.5rem; /* Mais espaço entre os botões */
+    justify-content: flex-end; /* Alinha botões à direita, um padrão comum */
+}
+
+/* --- Barra de Rolagem Customizada (Opcional, mas dá um toque profissional) --- */
+.rake-history::-webkit-scrollbar {
+    width: 6px;
+}
+.rake-history::-webkit-scrollbar-track {
+    background: transparent;
+}
+.rake-history::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 3px;
+}
+.rake-history::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-muted-color);
+}
+
+/* Faz o card de Despesas ocupar toda a linha e ficar centralizado */
+.despesas-card {
+    grid-column: 1 / -1;
+    max-width: 500px;
+    margin: 0 auto;
+}

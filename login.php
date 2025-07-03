@@ -1,5 +1,6 @@
 <?php
 session_start();
+// Se o usuário já tem uma sessão, não deve estar na tela de login.
 if (isset($_SESSION['user_id'])) {
     header('Location: dashboard.php');
     exit();
@@ -11,9 +12,7 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Easy Rake - Login</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="login-page">
     <div id="login-container" class="login-container">
@@ -21,7 +20,7 @@ if (isset($_SESSION['user_id'])) {
             <h1>Easy Rake</h1>
             <h2>Caixa - Cash Game</h2>
         </div>
-        <form id="loginForm" class="login-form">
+        <form id="loginForm" class="login-form" novalidate>
             <div class="input-group">
                 <label class="static-label">Tipo de Acesso</label>
                 <div class="user-type-selector" id="userTypeSelector">
@@ -31,31 +30,31 @@ if (isset($_SESSION['user_id'])) {
             </div>
             <div id="gestor-caixa-fields">
                 <div class="input-group">
-                    <input type="text" id="username" name="username" class="input-field" placeholder=" " required>
+                    <input type="text" id="username" class="input-field" placeholder=" " required>
                     <label for="username" class="input-label">Seu E-mail / Usuário</label>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="password" name="password" class="input-field" placeholder=" " required>
+                    <input type="password" id="password" class="input-field" placeholder=" " required>
                     <label for="password" class="input-label">Senha</label>
                 </div>
             </div>
             <div id="sanger-fields" style="display: none;">
                 <div class="input-group">
-                    <input type="text" id="sangerName" name="sangerName" class="input-field" placeholder=" ">
+                    <input type="text" id="sangerName" class="input-field" placeholder=" ">
                     <label for="sangerName" class="input-label">Seu Nome</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="codigo_acesso_sanger" name="codigo_acesso" class="input-field" placeholder=" ">
+                    <input type="text" id="codigo_acesso_sanger" class="input-field" placeholder=" ">
                     <label for="codigo_acesso_sanger" class="input-label">Código de Acesso da Unidade</label>
                 </div>
             </div>
-            <button type="submit" id="main-action-button" class="login-button">Entrar</button>
+            <button type="submit" id="main-action-button" class="button button--primary">Entrar</button>
             <div class="login-footer">
                 <a id="footer-link" href="registro.php">Não tenho acesso. Cadastrar-se.</a>
             </div>
         </form>
     </div>
-    <script src="js/auth.js"></script>
-    <script src="js/main.js"></script>
+
+    <script type="module" src="js/features/auth.js"></script>
 </body>
 </html>

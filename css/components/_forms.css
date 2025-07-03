@@ -1,0 +1,70 @@
+/* css/components/_forms.css */
+/* Estilos para inputs, labels e outros elementos de formulário. */
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+/* Estilo padrão de label */
+.input-group > label {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--text-muted-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Estilo padrão de input */
+.input-group input,
+.input-field {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background-color: var(--dark-bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color var(--transition-speed) ease;
+}
+
+.input-group input:focus,
+.input-field:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.input-group input:disabled {
+    background-color: #2c2c2c;
+    color: var(--text-muted-color);
+    cursor: not-allowed;
+}
+
+/* Lógica dos Labels flutuantes (do login.css) */
+.input-label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted-color);
+    background-color: var(--dark-bg-tertiary);
+    padding: 0 0.25rem;
+    transition: all var(--transition-speed) ease;
+    pointer-events: none;
+}
+
+.input-field:focus + .input-label,
+.input-field:not(:placeholder-shown) + .input-label {
+    top: 0;
+    font-size: 0.75rem;
+    color: var(--accent-color);
+}
+
+/* Força a cor de fundo no autofill do navegador */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--dark-bg-tertiary) inset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+    caret-color: var(--text-color);
+}

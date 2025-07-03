@@ -1,0 +1,29 @@
+/* css/base/_variables.css */
+/* Centraliza todas as "decisões de design" em um único lugar. */
+
+:root {
+    /* Paleta de Cores */
+    --accent-color: #e51e3e;
+    --accent-color-hover: #c2142f;
+    --dark-bg: #0c0c0c;
+    --dark-bg-secondary: #121212;
+    --dark-bg-tertiary: #1a1a1a;
+    --surface-color: #1c1c1c;
+    --border-color: #333;
+    --border-color-light: #282828;
+
+    /* Cores de Texto */
+    --text-color: #ffffff;
+    --text-muted-color: #a0a0a0;
+
+    /* Cores de Feedback */
+    --positive-color: #22c55e;
+    --negative-color: #ef4444;
+    --info-color: #3b82f6;
+
+    /* Fontes */
+    --font-primary: 'Inter', sans-serif;
+    
+    /* Outras Variáveis */
+    --transition-speed: 0.3s;
+}
